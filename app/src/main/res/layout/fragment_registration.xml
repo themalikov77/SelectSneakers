@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".ui.registration.RegistrationFragment">
+
+    <TextView
+        android:id="@+id/tvSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_marginEnd="@dimen/dp16"
+        android:background="@drawable/background_skip"
+        android:paddingHorizontal="@dimen/eight8dp"
+        android:paddingVertical="@dimen/dp4"
+        android:text="@string/skip"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp16"
+        android:background="@drawable/background_skip"
+        android:paddingHorizontal="@dimen/eight8dp"
+        android:paddingVertical="@dimen/dp4"
+        android:text="@string/back"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRegistration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp120"
+        android:text="@string/registration"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp28"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp20"
+        android:text="@string/data"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRegistration" />
+
+    <EditText
+        android:id="@+id/etNameAndFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp16"
+        android:layout_marginTop="@dimen/eight8dp"
+        android:background="@drawable/border_et"
+        android:drawableStart="@drawable/ic_person"
+        android:drawablePadding="@dimen/dp20"
+        android:hint="@string/name_and_firstname"
+        android:inputType="textPersonName"
+        android:padding="@dimen/dp16"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvData"
+        tools:ignore="Autofill,TextFields" />
+
+    <EditText
+        android:id="@+id/etLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp16"
+        android:layout_marginTop="@dimen/eight8dp"
+        android:background="@drawable/border_et"
+        android:drawableStart="@drawable/ic_e_mail"
+        android:drawablePadding="@dimen/dp20"
+        android:hint="@string/e_mail"
+        android:inputType="textEmailAddress"
+        android:padding="@dimen/dp16"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/etNameAndFirstName"
+        tools:ignore="Autofill,TextFields" />
+
+    <EditText
+        android:id="@+id/etNumberPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp16"
+        android:layout_marginTop="@dimen/eight8dp"
+        android:background="@drawable/border_et"
+        android:drawableStart="@drawable/ic_phone"
+        android:drawablePadding="@dimen/dp20"
+        android:hint="@string/numberPhone"
+        android:inputType="phone"
+        android:padding="@dimen/dp16"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/etLogin"
+        tools:ignore="Autofill,TextFields" />
+
+    <TextView
+        android:id="@+id/tvPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp20"
+        android:text="@string/password"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNumberPhone" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp16"
+        android:layout_marginTop="@dimen/eight8dp"
+        android:background="@drawable/border_et"
+        android:drawableStart="@drawable/ic_lock"
+        android:drawablePadding="@dimen/dp20"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:padding="@dimen/dp16"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvPassword"
+        tools:ignore="Autofill,TextFields" />
+
+    <EditText
+        android:id="@+id/etPasswordRepeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp16"
+        android:layout_marginTop="@dimen/eight8dp"
+        android:background="@drawable/border_et"
+        android:drawableStart="@drawable/ic_lock"
+        android:drawablePadding="@dimen/dp20"
+        android:hint="@string/passwordRepeat"
+        android:inputType="textPassword"
+        android:padding="@dimen/dp16"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/etPassword"
+        tools:ignore="Autofill,TextFields" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp20"
+        android:backgroundTint="@color/blue"
+        android:padding="@dimen/dp16"
+        android:text="@string/register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPasswordRepeat" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/text"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnRegister" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

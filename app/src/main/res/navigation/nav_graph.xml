@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/launchFragment">
 
 
     <fragment
@@ -11,4 +11,24 @@
         android:name="com.example.selectsneakers.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.selectsneakers.ui.registration.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" />
+    <fragment
+        android:id="@+id/launchFragment"
+        android:name="com.example.selectsneakers.ui.launch.LaunchFragment"
+        android:label="fragment_launch"
+        tools:layout="@layout/fragment_launch" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.selectsneakers.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/choiceFragment"
+        android:name="com.example.selectsneakers.ui.choice.ChoiceFragment"
+        android:label="fragment_choice"
+        tools:layout="@layout/fragment_choice" />
 </navigation>
