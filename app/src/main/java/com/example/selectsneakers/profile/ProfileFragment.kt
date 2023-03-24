@@ -56,6 +56,7 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+
         launcher2 =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
@@ -331,6 +332,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setPhoto(bitmap: Bitmap) {
+        binding.imgProfile.setImageResource(R.drawable.profile_img)
         binding.imgProfile.setImageBitmap(bitmap)
     }
 }
