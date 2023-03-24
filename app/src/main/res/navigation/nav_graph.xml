@@ -31,4 +31,24 @@
         android:name="com.example.selectsneakers.ui.choice.ChoiceFragment"
         android:label="fragment_choice"
         tools:layout="@layout/fragment_choice" />
+    <fragment
+        android:id="@+id/productCartFragment"
+        android:name="com.example.selectsneakers.ProductCartFragment"
+        android:label="fragment_product_cart"
+        tools:layout="@layout/fragment_product_cart" />
+    <fragment
+        android:id="@+id/allReviewsFragment"
+        android:name="com.example.selectsneakers.ui.allreviews.AllReviewsFragment"
+        android:label="fragment_all_reviews"
+        tools:layout="@layout/fragment_all_reviews" />
+    <fragment
+        android:id="@+id/allReviewsFragment2"
+        android:name="com.example.selectsneakers.ui.allreviews.AllReviewsFragment"
+        android:label="fragment_all_reviews"
+        tools:layout="@layout/fragment_all_reviews" />
+    <fragment
+        android:id="@+id/buySheetFragment"
+        android:name="com.example.selectsneakers.ui.productcard.BuySheetFragment"
+        android:label="fragment_buy_sheet"
+        tools:layout="@layout/fragment_buy_sheet" />
 </navigation>

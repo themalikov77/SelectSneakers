@@ -113,5 +113,4 @@
         app:spanCount="2"
         tools:listitem="@layout/item_goods" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

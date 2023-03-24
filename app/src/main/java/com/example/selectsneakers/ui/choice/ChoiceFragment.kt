@@ -2,25 +2,20 @@ package com.example.selectsneakers.ui.choice
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.selectsneakers.R
 import com.example.selectsneakers.core.ui.BaseFragment
 import com.example.selectsneakers.databinding.FragmentChoiceBinding
 import com.example.selectsneakers.ui.home.HomeViewModel
 
 
-class ChoiceFragment : BaseFragment<FragmentChoiceBinding, HomeViewModel>() {
-    override fun inflateViewBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentChoiceBinding {
-        return FragmentChoiceBinding.inflate(inflater, container, false)
-    }
+class ChoiceFragment : BaseFragment(R.layout.fragment_choice) {
+   private val binding by viewBinding(FragmentChoiceBinding::bind)
 
-    override val viewModel: HomeViewModel by lazy {
-        ViewModelProvider(this)[HomeViewModel::class.java]
-    }
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun initListeners() {
         super.initListeners()

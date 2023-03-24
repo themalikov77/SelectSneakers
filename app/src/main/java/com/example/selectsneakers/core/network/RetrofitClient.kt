@@ -1,6 +1,7 @@
-package com.example.selectsneakers.data.remote
+package com.example.selectsneakers.core.network
 
 import com.example.selectsneakers.BuildConfig
+import com.example.selectsneakers.data.remote.Api
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

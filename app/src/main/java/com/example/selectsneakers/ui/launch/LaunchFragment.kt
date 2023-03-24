@@ -1,4 +1,3 @@
-
 package com.example.selectsneakers.ui.launch
 
 import android.os.Handler
@@ -6,26 +5,20 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.selectsneakers.R
 import com.example.selectsneakers.core.ui.BaseFragment
 import com.example.selectsneakers.databinding.FragmentLaunchBinding
 import com.example.selectsneakers.ui.home.HomeViewModel
 
 
-class LaunchFragment : BaseFragment<FragmentLaunchBinding, HomeViewModel>() {
+class LaunchFragment : BaseFragment(R.layout.fragment_launch) {
     private var shortAnimationDuration: Int = 0
-    override fun inflateViewBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentLaunchBinding {
-        return FragmentLaunchBinding.inflate(inflater, container, false)
-    }
-
-    override val viewModel: HomeViewModel by lazy {
-        ViewModelProvider(this)[HomeViewModel::class.java]
-    }
+    private val binding by viewBinding(FragmentLaunchBinding::bind)
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun initListeners() {
         super.initListeners()
