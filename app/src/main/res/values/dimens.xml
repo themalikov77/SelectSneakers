@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="marginStart_Iv">23dp</dimen>
+    <dimen name="marginTop_iv">10dp</dimen>
+</resources>
