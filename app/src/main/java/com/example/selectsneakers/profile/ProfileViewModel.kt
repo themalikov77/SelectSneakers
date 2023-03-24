@@ -1,4 +1,4 @@
-package com.example.selectsneakers.ui.profile
+package com.example.selectsneakers.profile
 
 import androidx.lifecycle.ViewModel
 

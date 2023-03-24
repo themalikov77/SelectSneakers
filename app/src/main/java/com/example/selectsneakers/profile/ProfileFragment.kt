@@ -1,9 +1,10 @@
-package com.example.selectsneakers.ui.profile
+package com.example.selectsneakers.profile
 
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -23,7 +24,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.selectsneakers.R
 import com.example.selectsneakers.databinding.*
-import com.example.selectsneakers.ui.profile.pref.Pref
+import com.example.selectsneakers.profile.pref.Pref
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 @Suppress("DEPRECATION")
@@ -31,8 +32,10 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var launcher: ActivityResultLauncher<Intent>
+    private lateinit var launcher2: ActivityResultLauncher<Intent>
     private lateinit var pref: Pref
     private var imageUri: Uri? = null
+    private lateinit var bitmap: Bitmap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +56,14 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+        launcher2 =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                    bitmap = result.data?.extras?.get("data") as Bitmap
+                    setPhoto(bitmap)
+                }
+            }
+
         initViews()
         initListeners()
         initListener()
@@ -215,9 +226,7 @@ class ProfileFragment : Fragment() {
                     override fun afterTextChanged(s: Editable?) {}
                 }
                 dialogBinding.editName.addTextChangedListener(textWatcher)
-
                 val tvName = binding.tvName
-
                 dialogBinding.btnSave.setOnClickListener {
                     val name =
                         "${dialogBinding.editName.text.toString()} ${dialogBinding.editSurname.text.toString()}"
@@ -319,5 +328,9 @@ class ProfileFragment : Fragment() {
             imageUri = null
             binding.imgProfile.invalidate()
         }
+    }
+
+    private fun setPhoto(bitmap: Bitmap) {
+        binding.imgProfile.setImageBitmap(bitmap)
     }
 }

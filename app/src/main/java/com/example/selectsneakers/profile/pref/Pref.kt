@@ -1,4 +1,4 @@
-package com.example.selectsneakers.ui.profile.pref
+package com.example.selectsneakers.profile.pref
 
 import android.content.Context
 import android.net.Uri

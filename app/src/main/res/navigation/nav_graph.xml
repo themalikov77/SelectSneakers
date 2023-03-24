@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.selectsneakers.ui.profile.ProfileFragment"
+        android:name="com.example.selectsneakers.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile"/>
 
