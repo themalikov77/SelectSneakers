@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".ui.login.LoginFragment">
+
+    <TextView
+        android:id="@+id/tvSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_marginEnd="@dimen/dp16"
+        android:background="@drawable/background_skip"
+        android:paddingHorizontal="@dimen/eight8dp"
+        android:paddingVertical="@dimen/dp4"
+        android:text="@string/skip"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp16"
+        android:background="@drawable/background_skip"
+        android:paddingHorizontal="@dimen/eight8dp"
+        android:paddingVertical="@dimen/dp4"
+        android:text="@string/back"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_select"
+        android:layout_width="@dimen/dp200"
+        android:layout_height="@dimen/dp40"
+        android:layout_marginBottom="@dimen/dp150"
+        android:src="@drawable/img_select"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/imgSneakers"
+        android:layout_width="@dimen/dp136"
+        android:layout_height="@dimen/dp20"
+        android:layout_marginTop="@dimen/eight8dp"
+        android:src="@drawable/img_sneakers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_select"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tvRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp24"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_marginBottom="@dimen/dp36"
+        android:gravity="center"
+        android:text="@string/text_registration"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgSneakers" />
+
+    <EditText
+        android:id="@+id/etLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp32"
+        android:background="@drawable/border_et"
+        android:drawableStart="@drawable/ic_person"
+        android:drawablePadding="@dimen/dp20"
+        android:hint="@string/login"
+        android:padding="@dimen/dp16"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvRegistration"
+        tools:ignore="Autofill,TextFields" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp20"
+        android:layout_marginTop="@dimen/eight8dp"
+        android:background="@drawable/border_et"
+        android:drawableStart="@drawable/ic_lock"
+        android:drawablePadding="@dimen/dp20"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:padding="@dimen/dp16"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/etLogin"
+        tools:ignore="Autofill,TextFields" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEnter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp32"
+        android:backgroundTint="@color/blue"
+        android:padding="@dimen/dp16"
+        android:text="@string/Enter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPassword" />
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp0"
+        android:layout_marginTop="@dimen/dp16"
+        android:layout_marginBottom="@dimen/dp40"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnEnter">
+
+        <ImageView
+            android:id="@+id/imgGoogle"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp60"
+            android:src="@drawable/ic_google"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/imgFacebook"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp60"
+            android:layout_marginHorizontal="@dimen/dp20"
+            android:src="@drawable/ic_facebook"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/imgEmail"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp60"
+            android:src="@drawable/ic_email"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="@dimen/dp160"
+        android:layout_height="@dimen/dp210"
+        android:layout_marginStart="@dimen/dp16"
+        app:cardCornerRadius="@dimen/eight8dp"
+        android:layout_marginTop="@dimen/dp12"
+        app:cardElevation="@dimen/dp0"
+        app:elevation="@dimen/dp0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/image_cross"
+                android:layout_width="@dimen/dp160"
+                android:layout_height="@dimen/dp125"
+                android:background="@color/blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription,MissingPrefix" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/eight8dp"
+                android:text="@string/nike_sneakers"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp16"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_cross" />
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/eight8dp"
+                android:text="@string/mens_running_shoes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/eight8dp"
+                android:text="@string/_4590c"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDescription" />
+
+            <ImageView
+                android:id="@+id/imgPlus"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_plus"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvDescription"
+                app:layout_constraintTop_toBottomOf="@id/image_cross"
+                app:layout_constraintTop_toTopOf="@id/tvDescription"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plus"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/imgPlus"
+                app:layout_constraintEnd_toEndOf="@id/imgPlus"
+                app:layout_constraintStart_toStartOf="@id/imgPlus"
+                app:layout_constraintTop_toTopOf="@id/imgPlus" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "BASE_URL", "\"http://164.92.190.147:8919/\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -58,5 +59,7 @@ dependencies {
     //noinspection GradleDependency
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+    //search view
+    implementation "com.paulrybitskyi.persistentsearchview:persistentsearchview:1.1.4"
 
 }

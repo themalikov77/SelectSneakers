@@ -2,4 +2,37 @@
     <string name="app_name">Select Sneakers</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="text_registration">Войдите в аккаунт чтобы воспользоваться со всеми возможностями</string>
+    <string name="Enter">Войти</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="skip">Пропустить</string>
+    <string name="back">Назад</string>
+    <string name="password">Пароль</string>
+    <string name="login">Логин</string>
+    <string name="registration">Регистрация</string>
+    <string name="data">Основные данные</string>
+    <string name="name_and_firstname">Имя и фамилия</string>
+    <string name="e_mail">E-mail</string>
+    <string name="numberPhone">Номер телефона</string>
+    <string name="passwordRepeat">Повторите пароль</string>
+    <string name="text">Создавая учетную запись или подписывая ее,Вы соглашаетесь с намиши</string>
+    <string name="Kyrgyzstan">Кыргызстан</string>
+    <string name="Russia">Россия</string>
+    <string name="Belarus">Беларусь</string>
+    <string name="Kazakhstan">Казахстан</string>
+    <string name="Turkey">Турция</string>
+    <string name="Uzbekistan">Узбекистан</string>
+    <string name="remind_later">Напомнить позже</string>
+    <string name="trend">В тренде</string>
+    <string name="recommend">Рекомендуем посмотреть</string>
+    <string name="good_day">Добрый день!</string>
+    <string name="username">Имя пользователя</string>
+    <string name="brand">Бренды</string>
+    <string name="nike_sneakers">Nike sneakers</string>
+    <string name="mens_running_shoes">Mens running shoes</string>
+    <string name="_4590c">4590c</string>
+    <string name="plus">+</string>
+    <string name="discount">Скидки для всех!</string>
+    <string name="discount_all">Скидки для всех покупателей</string>
 </resources>
