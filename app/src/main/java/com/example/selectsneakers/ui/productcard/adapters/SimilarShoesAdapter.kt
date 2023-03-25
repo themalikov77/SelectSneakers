@@ -8,7 +8,8 @@ import com.bumptech.glide.Glide
 import com.example.selectsneakers.data.remote.model.Product
 import com.example.selectsneakers.databinding.ItemSimilarBinding
 
-class SimilarShoesAdapter : RecyclerView.Adapter<SimilarShoesAdapter.SimilarShoesViewHolder>() {
+class SimilarShoesAdapter(val onClick: (id: Int) -> Unit) :
+    RecyclerView.Adapter<SimilarShoesAdapter.SimilarShoesViewHolder>() {
 
     private var listSimilar = arrayListOf<Product>()
 
@@ -28,11 +29,11 @@ class SimilarShoesAdapter : RecyclerView.Adapter<SimilarShoesAdapter.SimilarShoe
     }
 
     override fun onBindViewHolder(holder: SimilarShoesViewHolder, position: Int) {
-       holder.bind(listSimilar[position])
+        holder.bind(listSimilar[position])
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addSimilarShoes(list:List<Product>){
+    fun addSimilarShoes(list: List<Product>) {
         listSimilar.clear()
         listSimilar.addAll(list)
         notifyDataSetChanged()
@@ -41,8 +42,13 @@ class SimilarShoesAdapter : RecyclerView.Adapter<SimilarShoesAdapter.SimilarShoe
     inner class SimilarShoesViewHolder(private val binding: ItemSimilarBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(imgSimilar: Product) {
-            with(binding){
-                Glide.with(binding.imgSimilar).load(imgSimilar.images[0].image).into(binding.imgSimilar)
+            with(binding) {
+                itemView.setOnClickListener {
+                    onClick(imgSimilar.id)
+                }
+
+                Glide.with(binding.imgSimilar).load(imgSimilar.images[0].image)
+                    .into(binding.imgSimilar)
                 textName.text = imgSimilar.name
                 textDescription.text = imgSimilar.description
                 textPrice.text = imgSimilar.price

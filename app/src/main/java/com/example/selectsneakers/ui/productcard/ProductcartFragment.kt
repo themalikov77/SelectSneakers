@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
@@ -19,7 +20,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.selectsneakers.R
 import com.example.selectsneakers.core.extension.*
 import com.example.selectsneakers.core.ui.BaseFragment
-import com.example.selectsneakers.databinding.FragmentProductCartBinding
+import com.example.selectsneakers.databinding.FragmentProductcartBinding
+import com.example.selectsneakers.ui.home.HomeFragment
+import com.example.selectsneakers.ui.productcard.BuySheetFragment
+import com.example.selectsneakers.ui.productcard.ProductCardViewModel
 import com.example.selectsneakers.ui.productcard.adapters.ColorShoesAdapter
 import com.example.selectsneakers.ui.productcard.adapters.ReviewAdapter
 import com.example.selectsneakers.ui.productcard.adapters.ShoesPagerAdapter
@@ -28,16 +32,18 @@ import com.example.selectsneakers.utils.UIState
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class ProductCardFragment : BaseFragment(R.layout.fragment_product_cart) {
 
-    private val binding by viewBinding(FragmentProductCartBinding::bind)
+class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
+
+    private val binding by viewBinding(FragmentProductcartBinding::bind)
     private lateinit var shoesPagerAdapter: ShoesPagerAdapter
     private val adapterColor = ColorShoesAdapter()
-    private val adapterSimilar = SimilarShoesAdapter()
+    private val adapterSimilar = SimilarShoesAdapter(this::onProductClick)
     private val adapterReview = ReviewAdapter()
     private val viewModel: ProductCardViewModel by viewModels()
     private var ratingCount = 0
     private val sizeOfShoes = ArrayList<String>()
+    private var id = 2
 
     companion object {
         const val TEXT_SEND = "Отправить"
@@ -45,7 +51,8 @@ class ProductCardFragment : BaseFragment(R.layout.fragment_product_cart) {
         const val WRITE_NEW_REVIEW = "Написать новый отзыв"
     }
 
-    override fun initView(){
+    override fun initView() {
+        receiveId()
         initRating()
         initTextFabric()
         initReductor()
@@ -98,9 +105,9 @@ class ProductCardFragment : BaseFragment(R.layout.fragment_product_cart) {
     }
 
     @SuppressLint("SetTextI18n")
-    override fun initListeners()
-    {
+    override fun initListeners() {
         with(binding) {
+
             ratingBar.setOnRatingBarChangeListener { ratingBar, _, _ ->
                 textScore.text = "${ratingBar.rating.toInt()}/5"
                 ratingCount = ratingBar.rating.toInt()
@@ -119,6 +126,40 @@ class ProductCardFragment : BaseFragment(R.layout.fragment_product_cart) {
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, sizeOfShoes)
         binding.autoCompleteTextView.setAdapter(arrayAdapter)
         binding.autoCompleteTextView.inputType
+    }
+
+    override fun setUpRequest() {
+        Log.e("ololo", id.toString())
+        Log.e("ololo", "1")
+        viewModel.getProductDetailList(1)
+      //  id?.let { viewModel.getProductDetailList(it) }
+
+    }
+
+    override fun setUpSubscriber() {
+        with(binding) {
+            viewModel.getProductDetailState.collectUIState(
+                state = { state ->
+                    binding.progress.progressContainer.isVisible = state is UIState.Loading
+                },
+                onSuccess = {
+                    //shoesPagerAdapter.addShoes(it.images)
+
+                    price.text = it.price
+                    name.text = it.name
+                    description.text = it.description
+                    autoCompleteTextView.setText(it.size.toString())
+                    sizeOfShoes.add(it.size.toString())
+                }
+            )
+        }
+    }
+
+
+    private fun receiveId(){
+        arguments?.let {
+             id = it.getInt(HomeFragment.KEY_FOR_PRODUCT)
+        }
     }
 
     @SuppressLint("InflateParams")
@@ -212,28 +253,8 @@ class ProductCardFragment : BaseFragment(R.layout.fragment_product_cart) {
 
     }
 
+    private fun onProductClick(id: Int){
 
-    override fun setUpRequest() {
-        viewModel.getProductDetailList(1)
-    }
-
-    override fun setUpSubscriber() {
-        with(binding) {
-            viewModel.getProductDetailState.collectUIState(
-                state = { state ->
-                    binding.progress.progressContainer.isVisible = state is UIState.Loading
-                },
-                onSuccess = {
-                    //shoesPagerAdapter.addShoes(it.images)
-
-                    price.text = it.price
-                    name.text = it.name
-                    description.text = it.description
-                    autoCompleteTextView.setText(it.size.toString())
-                    sizeOfShoes.add(it.size.toString())
-                }
-            )
-        }
     }
 
     private fun reviewClick() {
@@ -368,6 +389,5 @@ class ProductCardFragment : BaseFragment(R.layout.fragment_product_cart) {
         }
         return answer
     }
-
 
 }

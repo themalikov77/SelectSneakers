@@ -28,7 +28,6 @@ class ShoesPagerAdapter : RecyclerView.Adapter<ShoesPagerAdapter.ShoesPagerViewH
 
     @SuppressLint("NotifyDataSetChanged")
     fun addShoes(list: List<String>) {
-        listShoes.clear()
         listShoes.addAll(list)
         notifyDataSetChanged()
     }

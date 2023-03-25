@@ -98,4 +98,5 @@ class ProductCardViewModel() : BaseViewModel() {
     }
 
 
+
 }

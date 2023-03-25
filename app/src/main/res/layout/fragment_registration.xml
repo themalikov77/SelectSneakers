@@ -47,36 +47,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp16"
-        android:layout_marginTop="@dimen/dp20"
-        android:text="@string/data"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp20"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvRegistration" />
 
     <EditText
-        android:id="@+id/etNameAndFirstName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/dp16"
-        android:layout_marginTop="@dimen/eight8dp"
-        android:background="@drawable/border_et"
-        android:drawableStart="@drawable/ic_person"
-        android:drawablePadding="@dimen/dp20"
-        android:hint="@string/name_and_firstname"
-        android:inputType="textPersonName"
-        android:padding="@dimen/dp16"
-        android:textColorHint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/tvData"
-        tools:ignore="Autofill,TextFields" />
-
-    <EditText
-        android:id="@+id/etLogin"
+        android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp16"
@@ -88,36 +61,8 @@
         android:inputType="textEmailAddress"
         android:padding="@dimen/dp16"
         android:textColorHint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/etNameAndFirstName"
+        app:layout_constraintTop_toBottomOf="@id/tvRegistration"
         tools:ignore="Autofill,TextFields" />
-
-    <EditText
-        android:id="@+id/etNumberPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/dp16"
-        android:layout_marginTop="@dimen/eight8dp"
-        android:background="@drawable/border_et"
-        android:drawableStart="@drawable/ic_phone"
-        android:drawablePadding="@dimen/dp20"
-        android:hint="@string/numberPhone"
-        android:inputType="phone"
-        android:padding="@dimen/dp16"
-        android:textColorHint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/etLogin"
-        tools:ignore="Autofill,TextFields" />
-
-    <TextView
-        android:id="@+id/tvPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp16"
-        android:layout_marginTop="@dimen/dp20"
-        android:text="@string/password"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp20"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etNumberPhone" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -132,7 +77,7 @@
         android:inputType="textPassword"
         android:padding="@dimen/dp16"
         android:textColorHint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/tvPassword"
+        app:layout_constraintTop_toBottomOf="@id/etEmail"
         tools:ignore="Autofill,TextFields" />
 
     <EditText
@@ -159,6 +104,7 @@
         android:layout_marginTop="@dimen/dp20"
         android:backgroundTint="@color/blue"
         android:padding="@dimen/dp16"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -172,9 +118,9 @@
         android:text="@string/text"
         android:textColor="@color/white"
         android:textSize="@dimen/sp12"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnRegister" />
-
+        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegister"
+        android:layout_marginTop="80dp"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

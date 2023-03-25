@@ -227,7 +227,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textFabric5" />
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerSimilar"
                 android:layout_width="match_parent"

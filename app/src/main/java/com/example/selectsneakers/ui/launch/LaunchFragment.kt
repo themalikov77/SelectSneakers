@@ -13,11 +13,13 @@ import com.example.selectsneakers.R
 import com.example.selectsneakers.core.ui.BaseFragment
 import com.example.selectsneakers.databinding.FragmentLaunchBinding
 import com.example.selectsneakers.ui.home.HomeViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 class LaunchFragment : BaseFragment(R.layout.fragment_launch) {
     private var shortAnimationDuration: Int = 0
     private val binding by viewBinding(FragmentLaunchBinding::bind)
+    private val mAuth = FirebaseAuth.getInstance()
     private val viewModel: HomeViewModel by viewModels()
 
     override fun initListeners() {
@@ -66,6 +68,9 @@ class LaunchFragment : BaseFragment(R.layout.fragment_launch) {
                 alpha = 0f
                 visibility = View.VISIBLE
                 animate().alpha(1f).duration = shortAnimationDuration.toLong()
+            }
+            if (mAuth.currentUser!=null){
+                findNavController().navigate(R.id.homeFragment)
             }
         }, 4000)
         binding.skip.setOnClickListener {

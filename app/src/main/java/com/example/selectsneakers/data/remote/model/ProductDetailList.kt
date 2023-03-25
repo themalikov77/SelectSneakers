@@ -12,7 +12,3 @@ data class ProductDetailList (
     val season: Int,
     val images: List<Int>
         )
-
-data class Image(
-    val id: Int? = null
-)

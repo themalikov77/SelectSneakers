@@ -13,6 +13,4 @@ import retrofit2.Response
 
 class RegistrationViewModel : BaseViewModel() {
 
-    private val api: Api = RetrofitClient.create()
-
 }

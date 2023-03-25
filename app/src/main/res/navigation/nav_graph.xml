@@ -10,7 +10,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.selectsneakers.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_productcartFragment"
+            app:destination="@id/productcartFragment" />
+    </fragment>
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.example.selectsneakers.ui.registration.RegistrationFragment"
@@ -32,11 +36,6 @@
         android:label="fragment_choice"
         tools:layout="@layout/fragment_choice" />
     <fragment
-        android:id="@+id/productCartFragment"
-        android:name="com.example.selectsneakers.ProductCartFragment"
-        android:label="fragment_product_cart"
-        tools:layout="@layout/fragment_product_cart" />
-    <fragment
         android:id="@+id/allReviewsFragment"
         android:name="com.example.selectsneakers.ui.allreviews.AllReviewsFragment"
         android:label="fragment_all_reviews"
@@ -51,4 +50,9 @@
         android:name="com.example.selectsneakers.ui.productcard.BuySheetFragment"
         android:label="fragment_buy_sheet"
         tools:layout="@layout/fragment_buy_sheet" />
+    <fragment
+        android:id="@+id/productcartFragment"
+        android:name="com.example.selectsneakers.ui.productcard.ProductcartFragment"
+        android:label="fragment_productcart"
+        tools:layout="@layout/fragment_productcart" />
 </navigation>

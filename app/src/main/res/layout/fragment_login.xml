@@ -74,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@id/imgSneakers" />
 
     <EditText
-        android:id="@+id/etLogin"
+        android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp20"
@@ -101,7 +101,7 @@
         android:inputType="textPassword"
         android:padding="@dimen/dp16"
         android:textColorHint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/etLogin"
+        app:layout_constraintTop_toBottomOf="@id/etEmail"
         tools:ignore="Autofill,TextFields" />
 
     <com.google.android.material.button.MaterialButton
@@ -115,44 +115,7 @@
         android:text="@string/Enter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etPassword" />
-
-    <LinearLayout
-        android:id="@+id/linear"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp0"
-        android:layout_marginTop="@dimen/dp16"
-        android:layout_marginBottom="@dimen/dp40"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnEnter">
-
-        <ImageView
-            android:id="@+id/imgGoogle"
-            android:layout_width="@dimen/dp60"
-            android:layout_height="@dimen/dp60"
-            android:src="@drawable/ic_google"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/imgFacebook"
-            android:layout_width="@dimen/dp60"
-            android:layout_height="@dimen/dp60"
-            android:layout_marginHorizontal="@dimen/dp20"
-            android:src="@drawable/ic_facebook"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/imgEmail"
-            android:layout_width="@dimen/dp60"
-            android:layout_height="@dimen/dp60"
-            android:src="@drawable/ic_email"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
