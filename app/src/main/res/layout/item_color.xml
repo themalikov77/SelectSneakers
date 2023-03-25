@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:padding="6dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardColor"
+        android:layout_width="128dp"
+        android:layout_height="94dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgColor"
+            app:shapeAppearanceOverlay="@style/roundeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/imgColorStroke"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_img_color"
+            android:visibility="gone" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

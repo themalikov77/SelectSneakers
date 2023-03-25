@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/parentContainer"
+    android:layout_height="match_parent">
+
+    <include
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/progress"
+        layout="@layout/item_progres_bar"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollVeiw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="80dp">
+
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="50dp"
+                android:layout_height="44dp"
+                android:layout_margin="14dp"
+                android:backgroundTint="@color/black_back"
+                android:drawableStart="@drawable/baseline_arrow_back_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="14dp"
+                android:backgroundTint="@color/btn_add"
+                android:drawableLeft="@drawable/baseline_add_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/shoesPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/ic_launcher_background"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/Base.TextView"
+                android:layout_marginTop="33dp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shoesPager" />
+
+            <TextView
+                android:id="@+id/price"
+                style="@style/Base.TextView"
+                android:layout_marginTop="33dp"
+                android:textColor="@color/blue"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shoesPager" />
+
+
+            <Button
+                android:id="@+id/star"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="22dp"
+                android:background="@drawable/star_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name" />
+
+            <TextView
+                android:id="@+id/rating"
+                style="@style/Base.TextView"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="22dp"
+                android:text="4.5 (107 отзыва)"
+                android:textColor="@color/yellow"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/star"
+                app:layout_constraintTop_toBottomOf="@+id/name" />
+
+            <TextView
+                android:id="@+id/textDescription"
+                style="@style/Base.TextView"
+                android:layout_marginTop="15dp"
+                android:text="Описание"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rating" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/Base.TextView"
+                android:layout_width="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="4dp"
+                android:textColor="@color/grey"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textDescription" />
+
+            <TextView
+                android:id="@+id/size"
+                style="@style/Base.TextView"
+                android:layout_marginTop="26dp"
+                android:text="Размер"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dropDownMenuBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="19dp"
+                android:background="@drawable/bg_dropdown_menu"
+                app:layout_constraintBottom_toBottomOf="@+id/size"
+                app:layout_constraintStart_toEndOf="@+id/size"
+                app:layout_constraintTop_toTopOf="@+id/size">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteTextView"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/nothing"
+                    android:focusableInTouchMode="false"
+                    android:text="4"
+                    android:textSize="12sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/textColor"
+                style="@style/Base.TextView"
+                android:layout_marginTop="16dp"
+                android:text="Цвет"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/size" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/textColor"
+                tools:listitem="@layout/item_color" />
+
+            <include
+                android:id="@+id/textFabric1"
+                layout="@layout/item_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerColor" />
+
+            <include
+                android:id="@+id/textFabric2"
+                layout="@layout/item_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textFabric1" />
+
+            <include
+                android:id="@+id/textFabric3"
+                layout="@layout/item_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textFabric2" />
+
+            <include
+                android:id="@+id/textFabric4"
+                layout="@layout/item_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textFabric3" />
+
+            <include
+                android:id="@+id/textFabric5"
+                layout="@layout/item_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textFabric4" />
+
+            <TextView
+                android:id="@+id/textSimilar"
+                style="@style/Base.TextView"
+                android:layout_marginTop="20dp"
+                android:text="Похожие товары"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textFabric5" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerSimilar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/textSimilar"
+                tools:listitem="@layout/item_similar" />
+
+            <TextView
+                android:id="@+id/textReview"
+                style="@style/Base.TextView"
+                android:layout_marginTop="10dp"
+                android:text="107 отзывов"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerSimilar" />
+
+            <TextView
+                android:id="@+id/textRating"
+                style="@style/Base.TextView"
+                android:layout_marginTop="28dp"
+                android:text="4.5"
+                android:textColor="@color/black"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textReview" />
+
+            <LinearLayout
+                android:id="@+id/ratingLineContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="14dp"
+                android:orientation="vertical"
+                android:paddingVertical="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textRating"
+                app:layout_constraintTop_toBottomOf="@id/textReview">
+
+                <include
+                    android:id="@+id/ratingLine1"
+                    layout="@layout/item_rating" />
+
+                <include
+                    android:id="@+id/ratingLine2"
+                    layout="@layout/item_rating" />
+
+                <include
+                    android:id="@+id/ratingLine3"
+                    layout="@layout/item_rating" />
+
+                <include
+                    android:id="@+id/ratingLine4"
+                    layout="@layout/item_rating" />
+
+                <include
+                    android:id="@+id/ratingLine5"
+                    layout="@layout/item_rating" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/Base.TextView"
+                android:layout_marginTop="4dp"
+                android:text="Отзывы"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingLineContainer" />
+
+            <TextView
+                android:id="@+id/textReadMore"
+                style="@style/Base.TextView"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:text="Читать еще"
+                android:textColor="@color/blue"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingLineContainer" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerRreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/textReadMore"
+                tools:listitem="@layout/item_review" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mainContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerRreview">
+
+
+                <LinearLayout
+                    android:id="@+id/reviewContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+
+                        android:id="@+id/emailNameContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/editNameContainer"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/blue"
+                            app:boxStrokeErrorColor="@color/red"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="1.5dp"
+                            app:errorEnabled="true"
+                            app:errorIconDrawable="@drawable/baseline_error_24"
+                            app:helperTextEnabled="true"
+                            app:helperTextTextColor="@color/red"
+                            app:hintEnabled="false">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editName"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_review_edittext"
+                                android:drawableStart="@drawable/person_circle_24"
+                                android:drawablePadding="12dp"
+                                android:hint="Имя"
+                                android:lines="1"
+                                android:maxLength="20" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/editEmailContainer"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/blue"
+                            app:boxStrokeErrorColor="@color/red"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="1.5dp"
+                            app:errorEnabled="true"
+                            app:helperTextEnabled="true"
+                            app:helperTextTextColor="@color/red"
+                            app:hintEnabled="false">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_review_edittext"
+                                android:drawableStart="@drawable/email_24"
+                                android:drawablePadding="12dp"
+                                android:hint="E-mail"
+                                android:inputType="textEmailAddress"
+                                android:lines="1" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <TextView
+                            android:id="@+id/textYourScore"
+                            style="@style/Base.TextView"
+                            android:layout_marginVertical="12dp"
+                            android:text="Ваша оценка"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/doneReview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/containerOfRatingAndReview"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textYourReview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ваш отзыв"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            app:layout_constraintTop_toBottomOf="@id/textYourReview">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_to_cut_corners"
+                                android:backgroundTint="@color/card_review_grey">
+
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/imgReview"
+                                    android:layout_width="33dp"
+                                    android:layout_height="33dp"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginTop="10dp"
+                                    android:backgroundTint="@color/blue"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/textReviewName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="124dp"
+                                    android:layout_marginStart="18dp"
+                                    android:text="Имя"
+                                    android:textColor="@color/black"
+                                    android:textSize="17sp"
+                                    app:layout_constraintStart_toEndOf="@+id/imgReview"
+                                    app:layout_constraintTop_toTopOf="@+id/imgReview" />
+
+                                <TextView
+                                    android:id="@+id/cadTextReview"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_marginHorizontal="14dp"
+                                    android:text="Отзыв которы оставил пользователь или просто оценка"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/imgReview" />
+
+                                <Button
+                                    android:id="@+id/btnReductReview"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginEnd="13dp"
+                                    android:background="@drawable/more"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:id="@+id/reductDeleteCard"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:visibility="gone"
+                                    app:cardCornerRadius="16dp"
+                                    android:animateLayoutChanges="true"
+                                    app:layout_constraintEnd_toStartOf="@+id/btnReductReview"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/btnReductReview">
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:animateLayoutChanges="true"
+                                        android:layout_height="match_parent">
+
+                                        <TextView
+                                            android:id="@+id/textReduct"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="22dp"
+                                            android:text="Редактировать"
+                                            android:textColor="@color/black"
+                                            android:textSize="17sp"
+                                            android:textStyle="bold"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+
+                                        <View
+                                            android:id="@+id/devider"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="1dp"
+                                            android:layout_marginHorizontal="38dp"
+                                            android:layout_marginTop="14dp"
+                                            android:background="@color/divider_grey"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/textReduct" />
+
+                                        <TextView
+                                            android:id="@+id/textDeleteReview"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:layout_marginBottom="22dp"
+                                            android:text="Удалить Отзыв"
+                                            android:textColor="@color/black"
+                                            android:textSize="17sp"
+                                            android:textStyle="bold"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/devider" />
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                </com.google.android.material.card.MaterialCardView>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/containerOfRatingAndReview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        app:layout_constraintTop_toBottomOf="@id/emailNameContainer">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/containerRating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textScore"
+                                style="@style/Base.TextView"
+                                android:layout_marginStart="6dp"
+                                android:text="0/5"
+                                android:textColor="@color/black"
+                                android:textSize="30sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatRatingBar
+                                android:id="@+id/ratingBar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:numStars="5"
+                                android:progressBackgroundTint="@color/grey_for_reviews"
+                                android:progressTint="@color/yellow"
+                                android:stepSize="1"
+                                android:clickable="false"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/textScore"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/editReviewContainer"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/blue"
+                            app:boxStrokeErrorColor="@color/red"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="1.5dp"
+                            app:errorEnabled="true"
+                            app:helperTextEnabled="true"
+                            android:layout_marginTop="25dp"
+                            app:helperTextTextColor="@color/red"
+                            app:hintEnabled="false"
+                            app:layout_constraintTop_toBottomOf="@+id/containerRating">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editReview"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_review_edittext"
+                                android:hint="Написать отзыв"
+                                android:maxLength="300"
+                                android:textSize="15sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_to_cut_corners"
+                    android:backgroundTint="@color/blue"
+                    android:text="Написать отзыв"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/reviewContainer" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnBuy"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_to_cut_corners"
+        android:backgroundTint="@color/blue"
+        android:text="Купить"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

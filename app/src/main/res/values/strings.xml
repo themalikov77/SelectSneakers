@@ -35,4 +35,7 @@
     <string name="plus">+</string>
     <string name="discount">Скидки для всех!</string>
     <string name="discount_all">Скидки для всех покупателей</string>
+    <string name="Nike">Nike</string>
+    <string name="shoesDescription">Кроссовки Nike Air Max 97 с оригинальным волнистым дизайном, вдохновленным японскими скоростными пассажирскими экспрессами, позволяют вам развивать свой стиль на полной скорости.</string>
+    <string name="just_shoes_images">Just_shoes_images</string>
 </resources>
