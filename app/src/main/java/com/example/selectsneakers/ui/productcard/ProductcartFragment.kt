@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -20,10 +21,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.selectsneakers.R
 import com.example.selectsneakers.core.extension.*
 import com.example.selectsneakers.core.ui.BaseFragment
+import com.example.selectsneakers.data.remote.model.Favorite
 import com.example.selectsneakers.databinding.FragmentProductcartBinding
 import com.example.selectsneakers.ui.home.HomeFragment
-import com.example.selectsneakers.ui.productcard.BuySheetFragment
-import com.example.selectsneakers.ui.productcard.ProductCardViewModel
 import com.example.selectsneakers.ui.productcard.adapters.ColorShoesAdapter
 import com.example.selectsneakers.ui.productcard.adapters.ReviewAdapter
 import com.example.selectsneakers.ui.productcard.adapters.ShoesPagerAdapter
@@ -31,6 +31,11 @@ import com.example.selectsneakers.ui.productcard.adapters.SimilarShoesAdapter
 import com.example.selectsneakers.utils.UIState
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
@@ -43,7 +48,13 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     private val viewModel: ProductCardViewModel by viewModels()
     private var ratingCount = 0
     private val sizeOfShoes = ArrayList<String>()
-    private var id = 2
+    private var id = 1
+    private val mAuth = FirebaseAuth.getInstance()
+    private val db = FirebaseDatabase.getInstance().getReference("Users")
+    private var imagesId = 1
+    private var isInMyFavorite = false
+    private var doWeCheckFavorite = false
+
 
     companion object {
         const val TEXT_SEND = "Отправить"
@@ -51,8 +62,14 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         const val WRITE_NEW_REVIEW = "Написать новый отзыв"
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //  checkFavorite("Favorite")
+    }
+
+
     override fun initView() {
-        receiveId()
+
         initRating()
         initTextFabric()
         initReductor()
@@ -89,9 +106,9 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
             viewModel.getShoesColor().observe(viewLifecycleOwner) {
                 adapterColor.addColorList(it)
             }
-            viewModel.getShoesList().observe(viewLifecycleOwner) {
-                shoesPagerAdapter.addShoes(it)
-            }
+//            viewModel.getShoesList().observe(viewLifecycleOwner) {
+//                shoesPagerAdapter.addShoes(it)
+//            }
 //            viewModel.getShoesSimilar().observe(viewLifecycleOwner) {
 //                adapterSimilar.addSimilarShoes(it)
 //            }
@@ -107,16 +124,102 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     @SuppressLint("SetTextI18n")
     override fun initListeners() {
         with(binding) {
-
             ratingBar.setOnRatingBarChangeListener { ratingBar, _, _ ->
                 textScore.text = "${ratingBar.rating.toInt()}/5"
                 ratingCount = ratingBar.rating.toInt()
             }
             btnBuy.setOnClickListener {
-                BuySheetFragment().show(parentFragmentManager,"buySheetTag")
+                BuySheetFragment().show(parentFragmentManager, "buySheetTag")
+            }
+            btnAdd.setOnClickListener {
+                // addToRealtimeData("Favorite")
+            }
+            btnFavorite.setOnClickListener {
+                if (!isInMyFavorite) {
+                    addToRealtimeData("Favorite")
+                    // checkFavorite("Favorite")
+                    if (doWeCheckFavorite) {
+                        binding.btnFavorite.isVisible = false
+                        binding.btnIsFavorite.isVisible = true
+                    }
+                    Log.e("ololo", "heal: $isInMyFavorite")
+                }
+            }
+            btnIsFavorite.setOnClickListener {
+                if (isInMyFavorite) {
+                    removeFromFavorite("Favorite")
+                    // checkFavorite("Favorite")
+                    if (doWeCheckFavorite) {
+                        binding.btnFavorite.isVisible = true
+                        binding.btnIsFavorite.isVisible = false
+                    }
+                    Log.e("ololo", "heal: $isInMyFavorite")
+                }
             }
             reviewClick()
         }
+    }
+
+
+    private fun checkFavorite(child: String) {
+        db.child(mAuth.uid.toString()).child("Favorite").child(id.toString())
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    isInMyFavorite = snapshot.exists()
+                    if (!doWeCheckFavorite) {
+                        if (!isInMyFavorite) {
+                            binding.btnFavorite.isVisible = true
+                            binding.btnIsFavorite.isVisible = false
+                        } else {
+                            binding.btnFavorite.isVisible = false
+                            binding.btnIsFavorite.isVisible = true
+                        }
+                    }
+                    doWeCheckFavorite = true
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    makeToast(requireContext(), error.toString())
+                }
+            })
+    }
+
+    private fun removeFromFavorite(child: String) {
+        db.child(mAuth.uid.toString()).child("Favorite").child(id.toString()).removeValue()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    makeToast(requireContext(), "Successfuly deleted")
+                } else {
+                    makeToast(requireContext(), "Error of deleting")
+                }
+            }
+        doWeCheckFavorite = true
+        Log.e("ololo", "it's work")
+    }
+
+    private fun addToRealtimeData(child: String) {
+        with(binding) {
+            val model = Favorite(
+                id = id.toString(),
+                img = "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg",
+                description = description.text.toString(),
+                color = "no coler",
+                size = "44",
+                price = price.text.toString(),
+                name = name.text.toString()
+            )
+            db.child(mAuth.uid.toString()).child(child).child(model.id.toString())
+                .setValue(model)
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Toast.makeText(requireContext(), "add", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "not add", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+        }
+        doWeCheckFavorite = true
     }
 
     override fun onResume() {
@@ -129,10 +232,9 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     }
 
     override fun setUpRequest() {
-        Log.e("ololo", id.toString())
-        Log.e("ololo", "1")
-        viewModel.getProductDetailList(1)
-      //  id?.let { viewModel.getProductDetailList(it) }
+        receiveId()
+        viewModel.getProductDetailList(id)
+        viewModel.getImagesById(imagesId)
 
     }
 
@@ -143,22 +245,36 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                     binding.progress.progressContainer.isVisible = state is UIState.Loading
                 },
                 onSuccess = {
-                    //shoesPagerAdapter.addShoes(it.images)
 
+                    imagesId = it.images[0]
                     price.text = it.price
                     name.text = it.name
                     description.text = it.description
                     autoCompleteTextView.setText(it.size.toString())
                     sizeOfShoes.add(it.size.toString())
+
+                }
+            )
+
+            viewModel.getImagesByIdState.collectUIState(
+                state = { state ->
+                    binding.progress.progressContainer.isVisible = state is UIState.Loading
+                },
+                onSuccess = {
+                    //shoesPagerAdapter.addShoes(it.)
                 }
             )
         }
+        checkFavorite("Favorite")
     }
 
 
-    private fun receiveId(){
+    private fun receiveId() {
+        val listImage = arrayListOf<String>()
         arguments?.let {
-             id = it.getInt(HomeFragment.KEY_FOR_PRODUCT)
+            id = it.getInt(HomeFragment.KEY_FOR_PRODUCT)
+            Log.e("ololo", "id: $id")
+
         }
     }
 
@@ -253,7 +369,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     }
 
-    private fun onProductClick(id: Int){
+    private fun onProductClick(id: Int) {
 
     }
 

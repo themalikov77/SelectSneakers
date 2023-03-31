@@ -28,6 +28,11 @@
     <color name="nothing">#002E9399</color>
     <color name="color_dialog">#F3F4F9</color>
     <color name="red">#F70505</color>
+    <color name="brands_bg_blue">#A6E3E9</color>
+    <color name="brands_tv_blue">#195458</color>
+    <color name="brands_bg_gray">#80CBF1F5</color>
+    <color name="screan_bg">#F3F3F3</color>
+    <color name="tv_not_favorite">#B35C7E90</color>
 
 
 </resources>

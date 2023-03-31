@@ -12,13 +12,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/screan_bg">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp222"
-                android:background="@color/light_green"
+                android:layout_height="wrap_content"
+                android:background="@color/brands_bg_gray"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -59,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dp16"
-                    android:background="@color/white"
+                    android:background="@drawable/bg_search"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvUsername" />
 
@@ -74,6 +75,14 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/searchView" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerBrands"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBrand"
+                    tools:listitem="@layout/item_brands" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -114,9 +123,11 @@
                 android:id="@+id/recyclerTrend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTrend"
-                app:spanCount="2"
                 tools:listitem="@layout/item_goods" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

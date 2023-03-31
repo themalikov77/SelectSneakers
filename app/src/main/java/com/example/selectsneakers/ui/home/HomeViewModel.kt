@@ -3,16 +3,17 @@ package com.example.selectsneakers.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.example.selectsneakers.App
 import com.example.selectsneakers.core.ui.BaseViewModel
+import com.example.selectsneakers.data.remote.model.Favorite
 import com.example.selectsneakers.data.remote.model.Products
 import com.example.selectsneakers.utils.UIState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class HomeViewModel:BaseViewModel(){
+class HomeViewModel : BaseViewModel() {
 
     private val listRecommend = arrayListOf(
         "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg",
@@ -22,19 +23,28 @@ class HomeViewModel:BaseViewModel(){
         "https://i.pinimg.com/236x/40/38/c8/4038c87a8a470025eb08dac2775a3e60.jpg"
     )
     val recommendList = MutableLiveData<ArrayList<String>>()
-
     fun getShoesList(): LiveData<ArrayList<String>> {
         recommendList.value = listRecommend
         return recommendList
     }
 
-    private val _getProductsState= MutableStateFlow<UIState<Products>>(UIState.Empty())
+
+    private val listBrands =
+        arrayListOf("Nile", "Adidas", "Puma", "New Balance", "Lining", "Jordan")
+    val bransList = MutableLiveData<ArrayList<String>>()
+    fun getBrands(): LiveData<ArrayList<String>> {
+        bransList.value = listBrands
+        return bransList
+    }
+
+    private val _getProductsState = MutableStateFlow<UIState<Products>>(UIState.Empty())
     val getProductsState = _getProductsState.asStateFlow()
-    fun getProducts(){
+    fun getProducts(page:Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            App().repository.getProducts().collectFlow(_getProductsState)
+            App().repository.getProducts(page).collectFlow(_getProductsState)
         }
     }
+
 
 
 }

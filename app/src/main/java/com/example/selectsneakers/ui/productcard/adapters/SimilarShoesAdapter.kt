@@ -1,6 +1,7 @@
 package com.example.selectsneakers.ui.productcard.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -24,20 +25,28 @@ class SimilarShoesAdapter(val onClick: (id: Int) -> Unit) :
         )
     }
 
-    override fun getItemCount(): Int {
-        return listSimilar.size
-    }
 
     override fun onBindViewHolder(holder: SimilarShoesViewHolder, position: Int) {
         holder.bind(listSimilar[position])
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addSimilarShoes(list: List<Product>) {
-        listSimilar.clear()
+//    @SuppressLint("NotifyDataSetChanged")
+//    fun addSimilarShoes(list: List<Product>) {
+//        listSimilar.clear()
+//        listSimilar.addAll(list)
+//        notifyDataSetChanged()
+//    }
+
+    fun addSimilarPage(list: List<Product>) {
         listSimilar.addAll(list)
-        notifyDataSetChanged()
+        notifyItemChanged(itemCount - 1)
     }
+
+    override fun getItemCount(): Int {
+        Log.e("ololo", "size: ${listSimilar.size}")
+        return listSimilar.size
+    }
+
 
     inner class SimilarShoesViewHolder(private val binding: ItemSimilarBinding) :
         RecyclerView.ViewHolder(binding.root) {

@@ -1,11 +1,13 @@
 package com.example.selectsneakers.ui.productcard
 
+import android.provider.Contacts.Intents.UI
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.selectsneakers.App
 import com.example.selectsneakers.core.ui.BaseViewModel
 import com.example.selectsneakers.data.remote.model.ProductDetailList
+import com.example.selectsneakers.data.remote.model.ProductsImageSerializers
 import com.example.selectsneakers.data.remote.model.ShoesColorModel
 import com.example.selectsneakers.utils.UIState
 import kotlinx.coroutines.Dispatchers
@@ -65,8 +67,18 @@ class ProductCardViewModel() : BaseViewModel() {
     val shoesColorList = MutableLiveData<ArrayList<ShoesColorModel>>()
     val shoesSimilarList = MutableLiveData<ArrayList<String>>()
     val reviewList = MutableLiveData<ArrayList<String>>()
+    val arraySize = MutableLiveData<ArrayList<String>>()
 
 
+    private val sizeArray = arrayListOf(
+        "45", "44","88","88", "88", "88", "88", "88", "88"
+    )
+
+
+    fun getSizeList():LiveData<ArrayList<String>>{
+        arraySize.value = sizeArray
+        return arraySize
+    }
     fun getShoesList(): LiveData<ArrayList<String>> {
         shoesList.value = listShoes
         return shoesList
@@ -87,16 +99,25 @@ class ProductCardViewModel() : BaseViewModel() {
         return reviewList
     }
 
-    private val _getProductDetailState = MutableStateFlow<UIState<ProductDetailList>>(UIState.Empty())
+    private val _getProductDetailState =
+        MutableStateFlow<UIState<ProductDetailList>>(UIState.Empty())
     val getProductDetailState = _getProductDetailState.asStateFlow()
 
 
     fun getProductDetailList(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-           App().repository.getProductDetailList(id).collectFlow(_getProductDetailState)
+            App().repository.getProductDetailList(id).collectFlow(_getProductDetailState)
         }
     }
 
+    private val _getImagesByIdState =
+        MutableStateFlow<UIState<ProductsImageSerializers>>(UIState.Empty())
+    val getImagesByIdState = _getImagesByIdState.asStateFlow()
 
+    fun getImagesById(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            App().repository.getImagesById(id).collectFlow(_getImagesByIdState)
+        }
+    }
 
 }
