@@ -28,6 +28,7 @@ import com.example.selectsneakers.R
 import com.example.selectsneakers.core.extension.*
 import com.example.selectsneakers.core.ui.BaseFragment
 import com.example.selectsneakers.data.remote.model.Favorite
+import com.example.selectsneakers.data.remote.model.Product
 import com.example.selectsneakers.databinding.FragmentProductCart2Binding
 import com.example.selectsneakers.ui.home.HomeFragment
 import com.example.selectsneakers.ui.productcard.adapters.ColorShoesAdapter
@@ -46,7 +47,7 @@ import com.google.firebase.database.ValueEventListener
 class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
 
     private val binding by viewBinding(FragmentProductCart2Binding::bind)
-    private lateinit var shoesPagerAdapter: ShoesPagerAdapter
+    private var shoesPagerAdapter = ShoesPagerAdapter()
     private val adapterColor = ColorShoesAdapter()
     private val adapterSimilar = SimilarShoesAdapter(this::onProductClick)
     private val adapterReview = ReviewAdapter()
@@ -64,12 +65,14 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
     var currentPage = 1
     var isStart = false
     private var totalCount: Int = 1
+    private val listImage = arrayListOf<Product>()
 
     companion object {
         const val TEXT_SEND = "Отправить"
         const val TEXT_WRITE_REVIEW = "Написать отзыв"
         const val WRITE_NEW_REVIEW = "Написать новый отзыв"
-        const val KEY_FOR_PRODUCT_CART = "key_PC"
+        const val KEY_FOR_PRODUCT_CART = "key_P"
+        const val KEY_FOR_PRODUCT_CART_IMAGES = "key_P_IMAGES"
     }
 
     override fun initView() {
@@ -92,7 +95,6 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
 
     override fun initAdapters() {
         with(binding) {
-            shoesPagerAdapter = ShoesPagerAdapter()
             shoesPager.adapter = shoesPagerAdapter
             recyclerColor.initHorizontalAdapter()
             recyclerColor.adapter = adapterColor
@@ -276,14 +278,13 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
                     //shoesPagerAdapter.addShoes(it.)
                 }
             )
-            viewModel.getProductsState.collectUIState (
+            viewModel.getProductsState.collectUIState(
                 state = {
 
                 },
                 onSuccess = {
 
-                    Log.e("ololo", "page: ${it.next}")
-                    // pageToken = it.next
+                    listImage.addAll(it.results)
                     totalCount = it.count
                     adapterSimilar.addSimilarPage(it.results)
                 }
@@ -292,12 +293,12 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
         checkFavorite("Favorite")
     }
 
-
     private fun receiveId() {
-        val listImage = arrayListOf<String>()
         arguments?.let {
+            val images = it.getStringArrayList(ProductcartFragment.KEY_FOR_PRODUCT_CART_IMAGES2)
+            Log.e("ololo", "id: $images")
+            images?.let { it1 -> shoesPagerAdapter.addShoes(it1) }
             id = it.getInt(ProductcartFragment.KEY_FOR_PRODUCT_CART2)
-            Log.e("ololo", "id: $id")
         }
     }
 
@@ -393,7 +394,16 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
     }
 
     private fun onProductClick(id: Int) {
-        findNavController().navigate(R.id.productcartFragment, bundleOf(KEY_FOR_PRODUCT_CART to id))
+        val images = arrayListOf<String>()
+        listImage[id - 1].images.forEach {
+            images.add(it.image)
+        }
+        findNavController().navigate(
+            R.id.productcartFragment, bundleOf(
+                KEY_FOR_PRODUCT_CART to id,
+                KEY_FOR_PRODUCT_CART_IMAGES to images
+            )
+        )
     }
 
     private fun reviewClick() {

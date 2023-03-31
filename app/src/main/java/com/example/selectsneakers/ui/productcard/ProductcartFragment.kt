@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -18,7 +17,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -26,6 +24,7 @@ import com.example.selectsneakers.R
 import com.example.selectsneakers.core.extension.*
 import com.example.selectsneakers.core.ui.BaseFragment
 import com.example.selectsneakers.data.remote.model.Favorite
+import com.example.selectsneakers.data.remote.model.Product
 import com.example.selectsneakers.databinding.FragmentProductcartBinding
 import com.example.selectsneakers.ui.home.HomeFragment
 import com.example.selectsneakers.ui.productcard.adapters.ColorShoesAdapter
@@ -45,7 +44,7 @@ import com.google.firebase.database.ValueEventListener
 class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     private val binding by viewBinding(FragmentProductcartBinding::bind)
-    private lateinit var shoesPagerAdapter: ShoesPagerAdapter
+    private var shoesPagerAdapter = ShoesPagerAdapter()
     private val adapterColor = ColorShoesAdapter()
     private val adapterSimilar = SimilarShoesAdapter(this::onProductClick)
     private val adapterReview = ReviewAdapter()
@@ -63,6 +62,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     var currentPage = 1
     var isStart = false
     private var totalCount: Int = 1
+    private val listImage = arrayListOf<Product>()
 
 
     companion object {
@@ -70,6 +70,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         const val TEXT_WRITE_REVIEW = "Написать отзыв"
         const val WRITE_NEW_REVIEW = "Написать новый отзыв"
         const val KEY_FOR_PRODUCT_CART2 = "key_PC2"
+        const val KEY_FOR_PRODUCT_CART_IMAGES2 = "key_PC_IMG2"
     }
 
     override fun initView() {
@@ -91,7 +92,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     override fun initAdapters() {
         with(binding) {
-            shoesPagerAdapter = ShoesPagerAdapter()
+            //shoesPagerAdapter = ShoesPagerAdapter()
             shoesPager.adapter = shoesPagerAdapter
             recyclerColor.initHorizontalAdapter()
             recyclerColor.adapter = adapterColor
@@ -194,8 +195,8 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                     try {
                         binding.btnIsFavorite.isVisible = isInMyFavorite
                         binding.btnFavorite.isVisible = !isInMyFavorite
-                    }catch (e:Exception){
-                        Log.e("ololo",e.toString())
+                    } catch (e: Exception) {
+                        Log.e("ololo", e.toString())
                     }
                 }
 
@@ -294,8 +295,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                 },
                 onSuccess = {
 
-                    Log.e("ololo", "page: ${it.next}")
-                    // pageToken = it.next
+                    listImage.addAll(it.results)
                     totalCount = it.count
                     adapterSimilar.addSimilarPage(it.results)
                 }
@@ -304,19 +304,19 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         checkFavorite("Favorite")
     }
 
-
     private fun receiveId() {
-        val listImage = arrayListOf<String>()
-
         arguments?.let {
             id = it.getInt(ProductCartFragment2.KEY_FOR_PRODUCT_CART)
+            val images = it.getStringArrayList(ProductCartFragment2.KEY_FOR_PRODUCT_CART_IMAGES)
+            images?.let { it1 -> shoesPagerAdapter.addShoes(it1) }
         }
         arguments?.let {
             if (id == 0) {
                 id = it.getInt(HomeFragment.KEY_FOR_PRODUCT)
+                val listImage = it.getStringArrayList(HomeFragment.KEY_FOR_PRODUCT_IMAGES)!!
+                shoesPagerAdapter.addShoes(listImage)
             }
         }
-        Log.e("ololo", "id: $id")
     }
 
     @SuppressLint("InflateParams")
@@ -411,9 +411,16 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     }
 
     private fun onProductClick(id: Int) {
+
+        val images = arrayListOf<String>()
+        listImage[id - 1].images.forEach {
+            images.add(it.image)
+        }
+        Log.e("ololo", "hello bro: $images")
+
         findNavController().navigate(
             R.id.productCartFragment,
-            bundleOf(KEY_FOR_PRODUCT_CART2 to id)
+            bundleOf(KEY_FOR_PRODUCT_CART2 to id, KEY_FOR_PRODUCT_CART_IMAGES2 to images)
         )
     }
 

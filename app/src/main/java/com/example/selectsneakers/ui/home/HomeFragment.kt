@@ -1,5 +1,6 @@
 package com.example.selectsneakers.ui.home
 
+import android.os.Bundle
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -24,7 +25,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val adapterRecommend = RecommendAdapter()
     private val adapterTrend = SimilarShoesAdapter(this::onProductClick)
     private val adapterBrands = BrandsAdapter()
-    private val listImage = arrayListOf<String>()
+    private val listImage = arrayListOf<Product>()
     var isLoading = false
     var isLastPage = false
     var currentPage = 1
@@ -34,6 +35,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     companion object {
         const val KEY_FOR_PRODUCT = "PRODUCT"
+        const val KEY_FOR_PRODUCT_IMAGES = "PRODUCT_IMAGES"
     }
 
     override fun initAdapters() {
@@ -79,7 +81,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             },
             onSuccess = {
 
-                Log.e("ololo", "page: ${it.next}")
+
+                listImage.addAll(it.results)
+
+                // Log.e("ololo", "page: $listImage")
                 pageToken = it.next
                 totalCount = it.count
                 adapterTrend.addSimilarPage(it.results)
@@ -112,7 +117,17 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     private fun onProductClick(id: Int) {
-        findNavController().navigate(R.id.productcartFragment, bundleOf(KEY_FOR_PRODUCT to id))
+        val images = arrayListOf<String>()
+        val bundle = Bundle()
+        listImage[id - 1].images.forEach {
+            images.add(it.image)
+        }
+        findNavController().navigate(
+            R.id.productcartFragment, bundleOf(
+                KEY_FOR_PRODUCT to id,
+                KEY_FOR_PRODUCT_IMAGES to images
+            )
+        )
     }
 
 }
