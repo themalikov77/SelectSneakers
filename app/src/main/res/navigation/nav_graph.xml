@@ -59,4 +59,9 @@
         android:name="com.example.selectsneakers.ui.favorite.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/productCartFragment"
+        android:name="com.example.selectsneakers.ui.productcard.ProductCartFragment2"
+        android:label="fragment_product_cart"
+        tools:layout="@layout/fragment_product_cart2" />
 </navigation>

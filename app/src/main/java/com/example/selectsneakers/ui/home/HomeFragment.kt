@@ -2,6 +2,7 @@ package com.example.selectsneakers.ui.home
 
 import android.util.Log
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +16,7 @@ import com.example.selectsneakers.databinding.FragmentHomeBinding
 import com.example.selectsneakers.ui.home.adapter.BrandsAdapter
 import com.example.selectsneakers.ui.home.adapter.RecommendAdapter
 import com.example.selectsneakers.ui.productcard.adapters.SimilarShoesAdapter
+import com.example.selectsneakers.utils.UIState
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val binding by viewBinding(FragmentHomeBinding::bind)
@@ -40,7 +42,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             recyclerDiscount.initHorizontalAdapter()
             recyclerDiscount.adapter = adapterRecommend
 
-            recyclerTrend.layoutManager =  GridLayoutManager(context, 2)
+
+            recyclerTrend.layoutManager = GridLayoutManager(context, 2)
             recyclerTrend.adapter = adapterTrend
             setUpPagination()
 
@@ -63,11 +66,20 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         super.setUpSubscriber()
         viewModel.getProductsState.collectUIState(
             state = {
-
+                if (!isLoading) {
+                    binding.progressBar.isVisible = it is UIState.Loading
+                    binding.bottomProgress.isVisible = false
+                } else {
+                    binding.progressBar.isVisible = false
+                    binding.bottomProgress.isVisible = it is UIState.Loading
+                }
+                //binding.progress.progress.isVisible = it is UIState.Loading
+                // binding.imgProgress.isVisible = it is UIState.Loading
+                isLoading = true
             },
             onSuccess = {
-                //adapterTrend.addSimilarPage(it.results)
-                Log.e("ololo","page: ${it.next}")
+
+                Log.e("ololo", "page: ${it.next}")
                 pageToken = it.next
                 totalCount = it.count
                 adapterTrend.addSimilarPage(it.results)
@@ -75,14 +87,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         )
     }
 
-    private fun setUpPagination(){
-        binding.recyclerTrend.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+    private fun setUpPagination() {
+        binding.recyclerTrend.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val lastItem =
                     (recyclerView.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
-                if (!isLoading &&adapterTrend.itemCount < totalCount){
-                    if (lastItem == adapterTrend.itemCount -1 ){
+                if (adapterTrend.itemCount < totalCount) {
+                    if (lastItem == adapterTrend.itemCount - 1) {
                         currentPage++
                         viewModel.getProducts(currentPage)
                     }
@@ -91,18 +103,15 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         })
     }
 
-
     override fun setUpRequest() {
         super.setUpRequest()
-        if (!isStart){
+        if (!isStart) {
             viewModel.getProducts(currentPage)
             isStart = true
         }
     }
 
     private fun onProductClick(id: Int) {
-        Log.e("ololo", "by: $id")
-        // listImage.add(it.results[0].images[0].image)
         findNavController().navigate(R.id.productcartFragment, bundleOf(KEY_FOR_PRODUCT to id))
     }
 

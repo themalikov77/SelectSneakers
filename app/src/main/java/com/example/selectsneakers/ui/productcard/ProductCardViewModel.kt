@@ -1,12 +1,13 @@
 package com.example.selectsneakers.ui.productcard
 
-import android.provider.Contacts.Intents.UI
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.selectsneakers.App
 import com.example.selectsneakers.core.ui.BaseViewModel
 import com.example.selectsneakers.data.remote.model.ProductDetailList
+import com.example.selectsneakers.data.remote.model.Products
 import com.example.selectsneakers.data.remote.model.ProductsImageSerializers
 import com.example.selectsneakers.data.remote.model.ShoesColorModel
 import com.example.selectsneakers.utils.UIState
@@ -39,6 +40,7 @@ class ProductCardViewModel() : BaseViewModel() {
         "https://i.pinimg.com/236x/50/30/a5/5030a56e96c1c2350647f260e6acebca.jpg",
         "https://i.pinimg.com/236x/40/38/c8/4038c87a8a470025eb08dac2775a3e60.jpg"
     )
+
     private val listShoesColor: ArrayList<ShoesColorModel> = arrayListOf(
         ShoesColorModel(
             "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg",
@@ -62,12 +64,16 @@ class ProductCardViewModel() : BaseViewModel() {
         ),
     )
 
+    private var isInFavorite: ArrayList<Boolean> = arrayListOf()
+
+
 
     val shoesList = MutableLiveData<ArrayList<String>>()
     val shoesColorList = MutableLiveData<ArrayList<ShoesColorModel>>()
     val shoesSimilarList = MutableLiveData<ArrayList<String>>()
     val reviewList = MutableLiveData<ArrayList<String>>()
     val arraySize = MutableLiveData<ArrayList<String>>()
+    val inFavorite = MutableLiveData<ArrayList<Boolean>>()
 
 
     private val sizeArray = arrayListOf(
@@ -79,6 +85,16 @@ class ProductCardViewModel() : BaseViewModel() {
         arraySize.value = sizeArray
         return arraySize
     }
+
+    fun addFavoriteAnswer(favorite: Boolean){
+        isInFavorite.add(favorite)
+        Log.e("ololo","$isInFavorite")
+    }
+    fun getIsInFavorite():LiveData<ArrayList<Boolean>>{
+        inFavorite.value = isInFavorite
+        return inFavorite
+    }
+
     fun getShoesList(): LiveData<ArrayList<String>> {
         shoesList.value = listShoes
         return shoesList
@@ -119,5 +135,14 @@ class ProductCardViewModel() : BaseViewModel() {
             App().repository.getImagesById(id).collectFlow(_getImagesByIdState)
         }
     }
+
+    private val _getProductsState = MutableStateFlow<UIState<Products>>(UIState.Empty())
+    val getProductsState = _getProductsState.asStateFlow()
+    fun getProducts(page:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            App().repository.getProducts(page).collectFlow(_getProductsState)
+        }
+    }
+
 
 }

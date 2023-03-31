@@ -7,7 +7,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -18,7 +21,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -26,7 +28,7 @@ import com.example.selectsneakers.R
 import com.example.selectsneakers.core.extension.*
 import com.example.selectsneakers.core.ui.BaseFragment
 import com.example.selectsneakers.data.remote.model.Favorite
-import com.example.selectsneakers.databinding.FragmentProductcartBinding
+import com.example.selectsneakers.databinding.FragmentProductCart2Binding
 import com.example.selectsneakers.ui.home.HomeFragment
 import com.example.selectsneakers.ui.productcard.adapters.ColorShoesAdapter
 import com.example.selectsneakers.ui.productcard.adapters.ReviewAdapter
@@ -41,10 +43,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
 
-class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
-
-    private val binding by viewBinding(FragmentProductcartBinding::bind)
+    private val binding by viewBinding(FragmentProductCart2Binding::bind)
     private lateinit var shoesPagerAdapter: ShoesPagerAdapter
     private val adapterColor = ColorShoesAdapter()
     private val adapterSimilar = SimilarShoesAdapter(this::onProductClick)
@@ -64,12 +65,11 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     var isStart = false
     private var totalCount: Int = 1
 
-
     companion object {
         const val TEXT_SEND = "Отправить"
         const val TEXT_WRITE_REVIEW = "Написать отзыв"
         const val WRITE_NEW_REVIEW = "Написать новый отзыв"
-        const val KEY_FOR_PRODUCT_CART2 = "key_PC2"
+        const val KEY_FOR_PRODUCT_CART = "key_PC"
     }
 
     override fun initView() {
@@ -89,6 +89,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         )
     }
 
+
     override fun initAdapters() {
         with(binding) {
             shoesPagerAdapter = ShoesPagerAdapter()
@@ -97,7 +98,6 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
             recyclerColor.adapter = adapterColor
             recyclerSimilar.initHorizontalAdapter()
             recyclerSimilar.adapter = adapterSimilar
-
             setUpPagination()
             recyclerRreview.initHorizontalAdapter()
             recyclerRreview.adapter = adapterReview
@@ -130,27 +130,8 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
             viewModel.getReview().observe(viewLifecycleOwner) {
                 adapterReview.addReview(it)
             }
-            viewModel.getIsInFavorite().observe(viewLifecycleOwner) {
-//                if (it.isNotEmpty()){
-//                    btnIsFavorite.isVisible = it.last()
-//                }else{
-//                    btnIsFavorite.isVisible = isInMyFavorite
-//                }
-
-//                val lastElement = it.size
-//                if (!it.last()) {
-//                    btnIsFavorite.isVisible = false
-//                    btnFavorite.isVisible = true
-//                } else {
-//                    btnIsFavorite.isVisible = false
-//                    btnFavorite.isVisible = true
-//                }
-
-//                try {
-//                    Log.e("ololo",it.toString())
-//                }catch (e:java.lang.Exception){
-//                    Log.e("ololo", e.toString())
-//                }
+            textReadMore.setOnClickListener {
+                findNavController().navigate(R.id.allReviewsFragment)
             }
         }
     }
@@ -158,9 +139,6 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     @SuppressLint("SetTextI18n")
     override fun initListeners() {
         with(binding) {
-            textReadMore.setOnClickListener {
-                findNavController().navigate(R.id.allReviewsFragment)
-            }
             ratingBar.setOnRatingBarChangeListener { ratingBar, _, _ ->
                 textScore.text = "${ratingBar.rating.toInt()}/5"
                 ratingCount = ratingBar.rating.toInt()
@@ -171,32 +149,40 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
             btnFavorite.setOnClickListener {
                 if (!isInMyFavorite) {
                     addToRealtimeData("Favorite")
-                    checkFavorite("Favorite")
+                    if (doWeCheckFavorite) {
+                        binding.btnFavorite.isVisible = false
+                        binding.btnIsFavorite.isVisible = true
+                    }
                 }
             }
             btnIsFavorite.setOnClickListener {
                 if (isInMyFavorite) {
                     removeFromFavorite("Favorite")
-                    checkFavorite("Favorite")
+                    if (doWeCheckFavorite) {
+                        binding.btnFavorite.isVisible = true
+                        binding.btnIsFavorite.isVisible = false
+                    }
                 }
             }
             reviewClick()
         }
     }
 
-
     private fun checkFavorite(child: String) {
         db.child(mAuth.uid.toString()).child("Favorite").child(id.toString())
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     isInMyFavorite = snapshot.exists()
-                    viewModel.addFavoriteAnswer(snapshot.exists())
-                    try {
-                        binding.btnIsFavorite.isVisible = isInMyFavorite
-                        binding.btnFavorite.isVisible = !isInMyFavorite
-                    }catch (e:Exception){
-                        Log.e("ololo",e.toString())
+                    if (!doWeCheckFavorite) {
+                        if (!isInMyFavorite) {
+                            binding.btnFavorite.isVisible = true
+                            binding.btnIsFavorite.isVisible = false
+                        } else {
+                            binding.btnFavorite.isVisible = false
+                            binding.btnIsFavorite.isVisible = true
+                        }
                     }
+                    doWeCheckFavorite = true
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -214,6 +200,8 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                     makeToast(requireContext(), "Error of deleting")
                 }
             }
+        doWeCheckFavorite = true
+        Log.e("ololo", "it's work")
     }
 
     private fun addToRealtimeData(child: String) {
@@ -238,6 +226,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                     }
                 }
         }
+        doWeCheckFavorite = true
     }
 
     override fun onResume() {
@@ -287,8 +276,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                     //shoesPagerAdapter.addShoes(it.)
                 }
             )
-
-            viewModel.getProductsState.collectUIState(
+            viewModel.getProductsState.collectUIState (
                 state = {
 
                 },
@@ -307,16 +295,10 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     private fun receiveId() {
         val listImage = arrayListOf<String>()
-
         arguments?.let {
-            id = it.getInt(ProductCartFragment2.KEY_FOR_PRODUCT_CART)
+            id = it.getInt(ProductcartFragment.KEY_FOR_PRODUCT_CART2)
+            Log.e("ololo", "id: $id")
         }
-        arguments?.let {
-            if (id == 0) {
-                id = it.getInt(HomeFragment.KEY_FOR_PRODUCT)
-            }
-        }
-        Log.e("ololo", "id: $id")
     }
 
     @SuppressLint("InflateParams")
@@ -411,10 +393,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     }
 
     private fun onProductClick(id: Int) {
-        findNavController().navigate(
-            R.id.productCartFragment,
-            bundleOf(KEY_FOR_PRODUCT_CART2 to id)
-        )
+        findNavController().navigate(R.id.productcartFragment, bundleOf(KEY_FOR_PRODUCT_CART to id))
     }
 
     private fun reviewClick() {
@@ -423,7 +402,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
             var nameAnswer: Boolean
             var reviewAnswer: Boolean
             btnReview.setOnClickListener {
-                if (btnReview.text == TEXT_SEND) {
+                if (btnReview.text == ProductcartFragment.TEXT_SEND) {
                     emailAnswer = emailChecker()
                     nameAnswer = nameReviewChecker2(
                         editText = editName,
@@ -452,15 +431,15 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     private fun reviewLogic(emailAnswer: Boolean, nameAnswer: Boolean, reviewAnswer: Boolean) {
         with(binding) {
-            if (btnReview.text == TEXT_WRITE_REVIEW) {
-                btnReview.text = TEXT_SEND
+            if (btnReview.text == ProductcartFragment.TEXT_WRITE_REVIEW) {
+                btnReview.text = ProductcartFragment.TEXT_SEND
                 containerOfRatingAndReview.visibility = View.VISIBLE
                 emailNameContainer.visibility = View.VISIBLE
                 ratingBar.isEnabled = true
                 reviewContainer.visibility = View.VISIBLE
-            } else if (btnReview.text == TEXT_SEND) {
+            } else if (btnReview.text == ProductcartFragment.TEXT_SEND) {
                 if (emailAnswer && nameAnswer && reviewAnswer && ratingCount > 0) {
-                    btnReview.text = WRITE_NEW_REVIEW
+                    btnReview.text = ProductcartFragment.WRITE_NEW_REVIEW
                     editReview.visibility = View.GONE
                     doneReview.visibility = View.VISIBLE
                     reviewContainer.visibility = View.VISIBLE
@@ -472,9 +451,9 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                     Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
                 }
 
-            } else if (btnReview.text == WRITE_NEW_REVIEW) {
+            } else if (btnReview.text == ProductcartFragment.WRITE_NEW_REVIEW) {
 
-                btnReview.text = TEXT_SEND
+                btnReview.text = ProductcartFragment.TEXT_SEND
                 containerOfRatingAndReview.visibility = View.VISIBLE
                 emailNameContainer.visibility = View.VISIBLE
                 reviewContainer.visibility = View.VISIBLE
@@ -518,10 +497,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                     editEmailContainer.boxStrokeWidth = 0
                     editEmailContainer.helperText = null
                     editEmail.background =
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.bg_review_edittext
-                        )
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_review_edittext)
                 }
             }
         }
@@ -552,5 +528,6 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         }
         return answer
     }
+
 
 }

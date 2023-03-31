@@ -1,6 +1,5 @@
 package com.example.selectsneakers.ui.productcard.adapters
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -30,20 +29,12 @@ class SimilarShoesAdapter(val onClick: (id: Int) -> Unit) :
         holder.bind(listSimilar[position])
     }
 
-//    @SuppressLint("NotifyDataSetChanged")
-//    fun addSimilarShoes(list: List<Product>) {
-//        listSimilar.clear()
-//        listSimilar.addAll(list)
-//        notifyDataSetChanged()
-//    }
-
     fun addSimilarPage(list: List<Product>) {
         listSimilar.addAll(list)
         notifyItemChanged(itemCount - 1)
     }
 
     override fun getItemCount(): Int {
-        Log.e("ololo", "size: ${listSimilar.size}")
         return listSimilar.size
     }
 
