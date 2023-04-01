@@ -33,6 +33,9 @@
     <color name="brands_bg_gray">#80CBF1F5</color>
     <color name="screan_bg">#F3F3F3</color>
     <color name="tv_not_favorite">#B35C7E90</color>
+    <color name="light_white">#EFF2F5</color>
+    <color name="gray">#33909090</color>
+
 
 
 </resources>

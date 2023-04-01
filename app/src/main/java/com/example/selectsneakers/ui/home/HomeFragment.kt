@@ -2,6 +2,7 @@ package com.example.selectsneakers.ui.home
 
 import android.os.Bundle
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.bumptech.glide.Glide
 import com.example.selectsneakers.R
 import com.example.selectsneakers.core.extension.initHorizontalAdapter
 import com.example.selectsneakers.core.ui.BaseFragment
@@ -18,6 +20,11 @@ import com.example.selectsneakers.ui.home.adapter.BrandsAdapter
 import com.example.selectsneakers.ui.home.adapter.RecommendAdapter
 import com.example.selectsneakers.ui.productcard.adapters.SimilarShoesAdapter
 import com.example.selectsneakers.utils.UIState
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val binding by viewBinding(FragmentHomeBinding::bind)
@@ -32,6 +39,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     var isStart = false
     private var totalCount: Int = 1
     private var pageToken: String? = null
+    private val mAuth = FirebaseAuth.getInstance()
+    private val db = FirebaseDatabase.getInstance().getReference("Users")
 
     companion object {
         const val KEY_FOR_PRODUCT = "PRODUCT"
@@ -115,6 +124,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             viewModel.getProducts(currentPage)
             isStart = true
         }
+        getData("Image")
+        getData("Name")
     }
 
     private fun onProductClick(id: Int) {
@@ -129,6 +140,30 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 KEY_FOR_PRODUCT_IMAGES to images
             )
         )
+    }
+
+
+    private fun getData(child: String){
+        db.child(mAuth.uid.toString()).child("Profile").child(child)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (isAdded&&activity!=null){
+                        if (snapshot.exists()){
+                            if (child == "Image"){
+
+                                Glide.with(binding.imgHomeProfile).load(snapshot.value.toString().toUri()).into(binding.imgHomeProfile)
+                            }else if (child =="Name"){
+
+                                binding.tvUsername.text = snapshot.value.toString()
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
     }
 
 }

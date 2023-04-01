@@ -115,7 +115,6 @@
                 android:id="@+id/shoesPager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@drawable/ic_launcher_background"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -125,8 +124,11 @@
                 android:layout_marginTop="33dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toStartOf="@id/price"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/shoesPager" />
+
 
             <TextView
                 android:id="@+id/price"
@@ -559,8 +561,7 @@
                         android:id="@+id/containerOfRatingAndReview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:animateLayoutChanges="true"
-                        app:layout_constraintTop_toBottomOf="@id/emailNameContainer">
+                        android:animateLayoutChanges="true">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/containerRating"

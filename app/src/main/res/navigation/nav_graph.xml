@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_productcartFragment"
-            app:destination="@id/productcartFragment" />
+            app:destination="@id/productcartFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -53,7 +57,19 @@
         android:id="@+id/productcartFragment"
         android:name="com.example.selectsneakers.ui.productcard.ProductcartFragment"
         android:label="fragment_productcart"
-        tools:layout="@layout/fragment_productcart" />
+        tools:layout="@layout/fragment_productcart" >
+        <action
+            android:id="@+id/action_productcartFragment_to_productCartFragment"
+            app:destination="@id/productCartFragment" />
+        <action
+            android:id="@+id/action_productcartFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_productcartFragment_self"
+            app:destination="@id/productcartFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.selectsneakers.ui.favorite.FavoriteFragment"
@@ -63,10 +79,19 @@
         android:id="@+id/productCartFragment"
         android:name="com.example.selectsneakers.ui.productcard.ProductCartFragment2"
         android:label="fragment_product_cart"
-        tools:layout="@layout/fragment_product_cart2" />
+        tools:layout="@layout/fragment_product_cart2" >
+        <action
+            android:id="@+id/action_productCartFragment_to_productcartFragment"
+            app:destination="@id/productcartFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.example.selectsneakers.ui.cart.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.selectsneakers.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

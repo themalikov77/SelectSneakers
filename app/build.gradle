@@ -70,7 +70,11 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
     //circleImage
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'me.relex:circleindicator:2.1.6'
     //viewBinding
     implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.8'
     implementation("androidx.paging:paging-common:3.1.1")
+
+
+
 }

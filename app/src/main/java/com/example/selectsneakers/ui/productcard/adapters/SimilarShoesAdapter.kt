@@ -1,5 +1,6 @@
 package com.example.selectsneakers.ui.productcard.adapters
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -41,6 +42,7 @@ class SimilarShoesAdapter(val onClick: (id: Int) -> Unit) :
 
     inner class SimilarShoesViewHolder(private val binding: ItemSimilarBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(imgSimilar: Product) {
             with(binding) {
                 itemView.setOnClickListener {
@@ -51,7 +53,7 @@ class SimilarShoesAdapter(val onClick: (id: Int) -> Unit) :
                     .into(binding.imgSimilar)
                 textName.text = imgSimilar.name
                 textDescription.text = imgSimilar.description
-                textPrice.text = imgSimilar.price
+                textPrice.text = "${imgSimilar.price.toDouble().toInt()}c"
             }
         }
     }

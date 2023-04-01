@@ -3,11 +3,9 @@ package com.example.selectsneakers.ui.productcard
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
@@ -34,8 +32,6 @@ import com.example.selectsneakers.ui.productcard.adapters.ReviewAdapter
 import com.example.selectsneakers.ui.productcard.adapters.ShoesPagerAdapter
 import com.example.selectsneakers.ui.productcard.adapters.SimilarShoesAdapter
 import com.example.selectsneakers.utils.UIState
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -61,11 +57,8 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     private var imagesId = 1
     private var isInMyFavorite = false
     private var isInMyCart = false
-    private var doWeCheckFavorite = false
-    var isLoading = false
-    var isLastPage = false
     var currentPage = 1
-    var isStart = false
+    private var isStart = false
     private var totalCount: Int = 1
     private val listImage = arrayListOf<Product>()
     private var imgFavorite: String =
@@ -87,8 +80,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         initReductor()
         editReviewNameCheck(
             editText = binding.editReview,
-            editTextContainer = binding.editReviewContainer,
-            300
+            editTextContainer = binding.editReviewContainer
         )
     }
 
@@ -126,15 +118,14 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     override fun initObserver() {
         super.initObserver()
-        with(binding) {
-            viewModel.getShoesColor().observe(viewLifecycleOwner) {
-                adapterColor.addColorList(it)
-            }
-            viewModel.getReview().observe(viewLifecycleOwner) {
-                adapterReview.addReview(it)
-            }
-
+        viewModel.getShoesColor().observe(viewLifecycleOwner) {
+            adapterColor.addColorList(it)
         }
+        viewModel.getReview().observe(viewLifecycleOwner) {
+            adapterReview.addReview(it)
+        }
+
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -154,60 +145,42 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
             btnAdd.setOnClickListener {
                 if (!isInMyCart) {
-                    try {
-                        if (isAdded) {
-                            addToRealtimeData("Cart")
-                            checkFavorite("Cart")
-                        }
-                    } catch (e: Exception) {
-                        Log.e("ololo", e.toString())
+                    if (isAdded && activity != null) {
+                        addToRealtimeData("Cart")
                     }
-
                 }
             }
 
             btnIsAdd.setOnClickListener {
                 if (isInMyCart) {
-                    try {
-                        if (isAdded) {
-                            removeFromFavorite("Cart")
-                            checkFavorite("Cart")
-                        }
-                    } catch (e: java.lang.Exception) {
-                        Log.e("ololo", e.toString())
+                    if (isAdded && activity != null) {
+                        removeFromFavorite("Cart")
                     }
                 }
             }
 
             btnFavorite.setOnClickListener {
                 if (!isInMyFavorite) {
-                    try {
-                        if (isAdded) {
-                            addToRealtimeData("Favorite")
-                            checkFavorite("Favorite")
-                        }
-                    } catch (e: Exception) {
-                        Log.e("ololo", e.toString())
+                    if (isAdded && activity != null) {
+                        addToRealtimeData("Favorite")
                     }
-
                 }
             }
             btnIsFavorite.setOnClickListener {
                 if (isInMyFavorite) {
-                    try {
-                        if (isAdded) {
-                            removeFromFavorite("Favorite")
-                            checkFavorite("Favorite")
-                        }
-                    } catch (e: Exception) {
-                        Log.e("ololo", e.toString())
+
+                    if (isAdded && activity != null) {
+                        removeFromFavorite("Favorite")
                     }
+
                 }
+            }
+            btnBack.setOnClickListener {
+                findNavController().navigateUp()
             }
             reviewClick()
         }
     }
-
 
     private fun checkFavorite(child: String) {
         db.child(mAuth.uid.toString()).child(child).child(id.toString())
@@ -215,23 +188,19 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (child == "Favorite") {
                         isInMyFavorite = snapshot.exists()
-                        try {
-                            if (isAdded) {
-                                binding.btnIsFavorite.isVisible = isInMyFavorite
-                                binding.btnFavorite.isVisible = !isInMyFavorite
-                            }
-                        } catch (e: Exception) {
-                            Log.e("ololo", e.toString())
+
+                        if (isAdded && activity != null) {
+
+                            binding.btnIsFavorite.isVisible = isInMyFavorite
+                            binding.btnFavorite.isVisible = !isInMyFavorite
                         }
+
                     } else if (child == "Cart") {
                         isInMyCart = snapshot.exists()
-                        try {
-                            if (isAdded) {
-                                binding.btnAdd.isVisible = !isInMyCart
-                                binding.btnIsAdd.isVisible = isInMyCart
-                            }
-                        } catch (e: Exception) {
-                            Log.e("ololo", e.toString())
+
+                        if (isAdded && activity != null) {
+                            binding.btnAdd.isVisible = !isInMyCart
+                            binding.btnIsAdd.isVisible = isInMyCart
                         }
                     }
                 }
@@ -297,6 +266,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun setUpSubscriber() {
         with(binding) {
             viewModel.getProductDetailState.collectUIState(
@@ -306,7 +276,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                 onSuccess = {
 
                     imagesId = it.images[0]
-                    price.text = it.price
+                    price.text = "${it.price.toDouble().toInt()}c"
                     name.text = it.name
                     description.text = it.description
                     autoCompleteTextView.setText(it.size.toString())
@@ -316,8 +286,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
             )
 
             viewModel.getImagesByIdState.collectUIState(
-                state = { state ->
-
+                state = {
                     //binding.progress.progressContainer.isVisible = state is UIState.Loading
                 },
                 onSuccess = {
@@ -337,6 +306,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                 }
             )
         }
+        checkFavorite("Cart")
         checkFavorite("Favorite")
     }
 
@@ -468,7 +438,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         with(binding) {
             btnReview.setOnClickListener {
                 if (btnReview.text == TEXT_SEND) {
-                    if (editReview.text?.isEmpty() == true){
+                    if (editReview.text?.isEmpty() == true) {
                         editReviewContainer.boxStrokeWidth = 3
                         editReviewContainer.helperText = "Write review"
                         editReview.background = ContextCompat.getDrawable(
@@ -476,7 +446,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                             R.drawable.bg_error_edittext
                         )
                         reviewLogic(reviewAnswer = false)
-                    }else if(editReview.text?.isNotEmpty()==true){
+                    } else if (editReview.text?.isNotEmpty() == true) {
                         editReviewContainer.boxStrokeWidth = 0
                         editReviewContainer.helperText = null
                         editReview.background = ContextCompat.getDrawable(
@@ -526,12 +496,11 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     private fun editReviewNameCheck(
         editText: TextInputEditText,
-        editTextContainer: TextInputLayout,
-        maxLength: Int
+        editTextContainer: TextInputLayout
     ) {
         editText.doOnTextChanged { text, _, _, _ ->
-            if (editText.text?.isNotEmpty()==true) {
-                if (text!!.length < maxLength) {
+            if (editText.text?.isNotEmpty() == true) {
+                if (text!!.length < 300) {
                     editTextContainer.boxStrokeWidth = 0
                     editTextContainer.helperText = null
                     editText.background = ContextCompat.getDrawable(
@@ -550,11 +519,6 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
         }
     }
-
-
-
-
-
 
 
 }

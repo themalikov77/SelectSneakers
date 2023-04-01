@@ -7,5 +7,4 @@ import com.example.selectsneakers.data.remote.model.Favorite
 
 class FavoriteViewModel : BaseViewModel() {
 
-
 }

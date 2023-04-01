@@ -19,7 +19,7 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/profile"
+        android:id="@+id/profileFragment"
         android:icon="@drawable/person"
         android:title="profile"
         app:showAsAction="ifRoom" />

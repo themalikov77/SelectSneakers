@@ -28,4 +28,10 @@
     <dimen name="dp160">160dp</dimen>
     <dimen name="dp210">210dp</dimen>
     <dimen name="dp125">125dp</dimen>
+    <dimen name="text_size">16sp</dimen>
+    <dimen name="margins_medium">20dp</dimen>
+    <dimen name="margin_big">50dp</dimen>
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="corner">10dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

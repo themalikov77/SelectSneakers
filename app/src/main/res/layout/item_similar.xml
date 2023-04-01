@@ -23,7 +23,6 @@
                 android:id="@+id/imgSimilar"
                 android:layout_width="match_parent"
                 android:layout_height="125dp"
-                android:background="@drawable/ic_launcher_background"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
