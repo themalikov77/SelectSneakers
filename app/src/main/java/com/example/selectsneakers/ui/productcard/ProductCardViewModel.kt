@@ -64,7 +64,6 @@ class ProductCardViewModel() : BaseViewModel() {
         ),
     )
 
-    private var isInFavorite: ArrayList<Boolean> = arrayListOf()
 
 
 
@@ -73,7 +72,7 @@ class ProductCardViewModel() : BaseViewModel() {
     val shoesSimilarList = MutableLiveData<ArrayList<String>>()
     val reviewList = MutableLiveData<ArrayList<String>>()
     val arraySize = MutableLiveData<ArrayList<String>>()
-    val inFavorite = MutableLiveData<ArrayList<Boolean>>()
+
 
 
     private val sizeArray = arrayListOf(
@@ -86,14 +85,7 @@ class ProductCardViewModel() : BaseViewModel() {
         return arraySize
     }
 
-    fun addFavoriteAnswer(favorite: Boolean){
-        isInFavorite.add(favorite)
-        Log.e("ololo","$isInFavorite")
-    }
-    fun getIsInFavorite():LiveData<ArrayList<Boolean>>{
-        inFavorite.value = isInFavorite
-        return inFavorite
-    }
+
 
     fun getShoesList(): LiveData<ArrayList<String>> {
         shoesList.value = listShoes

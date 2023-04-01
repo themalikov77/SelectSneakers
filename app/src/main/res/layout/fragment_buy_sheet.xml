@@ -3,77 +3,91 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:backgroundTint="@color/nothing"
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/textChoose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Выберите цвет и размер"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="22dp"
-        android:text="Размер"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textChoose" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/idRecyclerSize"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_marginTop="15dp"
-        tools:listitem="@layout/item_buy_size"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/textSize" />
+        app:cardCornerRadius="10dp"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="15dp"
-        android:text="Цвет"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/idRecyclerSize" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerColor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textColor"
-        tools:listitem="@layout/item_color" />
+            <TextView
+                android:id="@+id/textChoose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Выберите цвет и размер"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="22dp"
+                android:text="Размер"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textChoose" />
 
 
-    <Button
-        android:id="@+id/btnContinue"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginHorizontal="14dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/bg_to_cut_corners"
-        android:backgroundTint="@color/blue"
-        android:text="Продолжить"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerColor" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/idRecyclerSize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                tools:listitem="@layout/item_buy_size"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/textSize" />
 
+            <TextView
+                android:id="@+id/textColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="15dp"
+                android:text="Цвет"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/idRecyclerSize" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/textColor"
+                tools:listitem="@layout/item_color" />
+
+
+            <Button
+                android:id="@+id/btnContinue"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_to_cut_corners"
+                android:backgroundTint="@color/blue"
+                android:text="Продолжить"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerColor" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

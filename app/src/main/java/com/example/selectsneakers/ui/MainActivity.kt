@@ -11,7 +11,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -21,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             navController.addOnDestinationChangedListener { _, destination, _ ->
                 navigationBar.isVisible =
-                    destination.id == R.id.homeFragment || destination.id == R.id.favoriteFragment
+                    destination.id == R.id.homeFragment || destination.id == R.id.favoriteFragment ||destination.id ==R.id.cartFragment
             }
         }
 
@@ -35,9 +34,12 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.favoriteFragment)
                     true
                 }
+                R.id.cartFragment ->{
+                    navController.navigate(R.id.cartFragment)
+                    true
+                }
                 else -> false
             }
         }
     }
-
 }

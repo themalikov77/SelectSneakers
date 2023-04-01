@@ -64,4 +64,9 @@
         android:name="com.example.selectsneakers.ui.productcard.ProductCartFragment2"
         android:label="fragment_product_cart"
         tools:layout="@layout/fragment_product_cart2" />
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.example.selectsneakers.ui.cart.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
 </navigation>

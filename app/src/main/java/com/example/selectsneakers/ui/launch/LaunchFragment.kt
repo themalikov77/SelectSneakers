@@ -22,6 +22,8 @@ class LaunchFragment : BaseFragment(R.layout.fragment_launch) {
     private val mAuth = FirebaseAuth.getInstance()
     private val viewModel: HomeViewModel by viewModels()
 
+
+
     override fun initListeners() {
         super.initListeners()
         shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
@@ -69,7 +71,7 @@ class LaunchFragment : BaseFragment(R.layout.fragment_launch) {
                 visibility = View.VISIBLE
                 animate().alpha(1f).duration = shortAnimationDuration.toLong()
             }
-            if (mAuth.currentUser!=null){
+            if (mAuth.currentUser != null) {
                 findNavController().navigate(R.id.homeFragment)
             }
         }, 4000)

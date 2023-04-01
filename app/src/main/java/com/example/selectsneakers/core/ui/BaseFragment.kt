@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
+import com.example.selectsneakers.core.extension.makeToast
 import com.example.selectsneakers.utils.UIState
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -21,13 +22,17 @@ abstract class BaseFragment(@LayoutRes layoutId: Int) : Fragment(layoutId) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkInternet()
-        setUpRequest()
-        setUpSubscriber()
-        initAdapters()
-        initView()
-        initObserver()
-        initListeners()
+        if(isAdded){
+            checkInternet()
+            setUpRequest()
+            setUpSubscriber()
+            initAdapters()
+            initView()
+            initObserver()
+            initListeners()
+        }else{
+            makeToast(requireContext(),"Fragment not added")
+        }
     }
 
     protected open fun initListeners() {}

@@ -27,7 +27,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val adapterBrands = BrandsAdapter()
     private val listImage = arrayListOf<Product>()
     var isLoading = false
-    var isLastPage = false
+    var doYouSeeShow = false
     var currentPage = 1
     var isStart = false
     private var totalCount: Int = 1
@@ -37,6 +37,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         const val KEY_FOR_PRODUCT = "PRODUCT"
         const val KEY_FOR_PRODUCT_IMAGES = "PRODUCT_IMAGES"
     }
+
 
     override fun initAdapters() {
         super.initAdapters()

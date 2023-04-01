@@ -3,9 +3,11 @@ package com.example.selectsneakers.ui.productcard
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
@@ -32,6 +34,8 @@ import com.example.selectsneakers.ui.productcard.adapters.ReviewAdapter
 import com.example.selectsneakers.ui.productcard.adapters.ShoesPagerAdapter
 import com.example.selectsneakers.ui.productcard.adapters.SimilarShoesAdapter
 import com.example.selectsneakers.utils.UIState
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -56,6 +60,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     private val db = FirebaseDatabase.getInstance().getReference("Users")
     private var imagesId = 1
     private var isInMyFavorite = false
+    private var isInMyCart = false
     private var doWeCheckFavorite = false
     var isLoading = false
     var isLastPage = false
@@ -63,6 +68,8 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     var isStart = false
     private var totalCount: Int = 1
     private val listImage = arrayListOf<Product>()
+    private var imgFavorite: String =
+        "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg"
 
 
     companion object {
@@ -73,16 +80,11 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         const val KEY_FOR_PRODUCT_CART_IMAGES2 = "key_PC_IMG2"
     }
 
+
     override fun initView() {
         initRating()
         initTextFabric()
         initReductor()
-        editEmailCheck()
-        editReviewNameCheck(
-            editText = binding.editName,
-            editTextContainer = binding.editNameContainer,
-            20
-        )
         editReviewNameCheck(
             editText = binding.editReview,
             editTextContainer = binding.editReviewContainer,
@@ -92,7 +94,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     override fun initAdapters() {
         with(binding) {
-            //shoesPagerAdapter = ShoesPagerAdapter()
+
             shoesPager.adapter = shoesPagerAdapter
             recyclerColor.initHorizontalAdapter()
             recyclerColor.adapter = adapterColor
@@ -131,28 +133,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
             viewModel.getReview().observe(viewLifecycleOwner) {
                 adapterReview.addReview(it)
             }
-            viewModel.getIsInFavorite().observe(viewLifecycleOwner) {
-//                if (it.isNotEmpty()){
-//                    btnIsFavorite.isVisible = it.last()
-//                }else{
-//                    btnIsFavorite.isVisible = isInMyFavorite
-//                }
 
-//                val lastElement = it.size
-//                if (!it.last()) {
-//                    btnIsFavorite.isVisible = false
-//                    btnFavorite.isVisible = true
-//                } else {
-//                    btnIsFavorite.isVisible = false
-//                    btnFavorite.isVisible = true
-//                }
-
-//                try {
-//                    Log.e("ololo",it.toString())
-//                }catch (e:java.lang.Exception){
-//                    Log.e("ololo", e.toString())
-//                }
-            }
         }
     }
 
@@ -166,19 +147,61 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
                 textScore.text = "${ratingBar.rating.toInt()}/5"
                 ratingCount = ratingBar.rating.toInt()
             }
+
             btnBuy.setOnClickListener {
                 BuySheetFragment().show(parentFragmentManager, "buySheetTag")
             }
+
+            btnAdd.setOnClickListener {
+                if (!isInMyCart) {
+                    try {
+                        if (isAdded) {
+                            addToRealtimeData("Cart")
+                            checkFavorite("Cart")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("ololo", e.toString())
+                    }
+
+                }
+            }
+
+            btnIsAdd.setOnClickListener {
+                if (isInMyCart) {
+                    try {
+                        if (isAdded) {
+                            removeFromFavorite("Cart")
+                            checkFavorite("Cart")
+                        }
+                    } catch (e: java.lang.Exception) {
+                        Log.e("ololo", e.toString())
+                    }
+                }
+            }
+
             btnFavorite.setOnClickListener {
                 if (!isInMyFavorite) {
-                    addToRealtimeData("Favorite")
-                    checkFavorite("Favorite")
+                    try {
+                        if (isAdded) {
+                            addToRealtimeData("Favorite")
+                            checkFavorite("Favorite")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("ololo", e.toString())
+                    }
+
                 }
             }
             btnIsFavorite.setOnClickListener {
                 if (isInMyFavorite) {
-                    removeFromFavorite("Favorite")
-                    checkFavorite("Favorite")
+                    try {
+                        if (isAdded) {
+                            removeFromFavorite("Favorite")
+                            checkFavorite("Favorite")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("ololo", e.toString())
+                    }
                 }
             }
             reviewClick()
@@ -187,16 +210,29 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
 
     private fun checkFavorite(child: String) {
-        db.child(mAuth.uid.toString()).child("Favorite").child(id.toString())
+        db.child(mAuth.uid.toString()).child(child).child(id.toString())
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    isInMyFavorite = snapshot.exists()
-                    viewModel.addFavoriteAnswer(snapshot.exists())
-                    try {
-                        binding.btnIsFavorite.isVisible = isInMyFavorite
-                        binding.btnFavorite.isVisible = !isInMyFavorite
-                    } catch (e: Exception) {
-                        Log.e("ololo", e.toString())
+                    if (child == "Favorite") {
+                        isInMyFavorite = snapshot.exists()
+                        try {
+                            if (isAdded) {
+                                binding.btnIsFavorite.isVisible = isInMyFavorite
+                                binding.btnFavorite.isVisible = !isInMyFavorite
+                            }
+                        } catch (e: Exception) {
+                            Log.e("ololo", e.toString())
+                        }
+                    } else if (child == "Cart") {
+                        isInMyCart = snapshot.exists()
+                        try {
+                            if (isAdded) {
+                                binding.btnAdd.isVisible = !isInMyCart
+                                binding.btnIsAdd.isVisible = isInMyCart
+                            }
+                        } catch (e: Exception) {
+                            Log.e("ololo", e.toString())
+                        }
                     }
                 }
 
@@ -207,7 +243,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
     }
 
     private fun removeFromFavorite(child: String) {
-        db.child(mAuth.uid.toString()).child("Favorite").child(id.toString()).removeValue()
+        db.child(mAuth.uid.toString()).child(child).child(id.toString()).removeValue()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     makeToast(requireContext(), "Successfuly deleted")
@@ -221,7 +257,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         with(binding) {
             val model = Favorite(
                 id = id.toString(),
-                img = "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg",
+                img = imgFavorite,
                 description = description.text.toString(),
                 color = "no coler",
                 size = "44",
@@ -308,12 +344,16 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         arguments?.let {
             id = it.getInt(ProductCartFragment2.KEY_FOR_PRODUCT_CART)
             val images = it.getStringArrayList(ProductCartFragment2.KEY_FOR_PRODUCT_CART_IMAGES)
+            imgFavorite = images?.get(0)
+                ?: "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg"
             images?.let { it1 -> shoesPagerAdapter.addShoes(it1) }
         }
         arguments?.let {
             if (id == 0) {
                 id = it.getInt(HomeFragment.KEY_FOR_PRODUCT)
                 val listImage = it.getStringArrayList(HomeFragment.KEY_FOR_PRODUCT_IMAGES)!!
+                imgFavorite = listImage[0]
+                    ?: "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg"
                 shoesPagerAdapter.addShoes(listImage)
             }
         }
@@ -426,54 +466,48 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
     private fun reviewClick() {
         with(binding) {
-            var emailAnswer: Boolean
-            var nameAnswer: Boolean
-            var reviewAnswer: Boolean
             btnReview.setOnClickListener {
                 if (btnReview.text == TEXT_SEND) {
-                    emailAnswer = emailChecker()
-                    nameAnswer = nameReviewChecker2(
-                        editText = editName,
-                        editContainer = editNameContainer,
-                        errorHelperText = "Write your name",
-                        requireContext()
-                    )
-                    reviewAnswer = nameReviewChecker2(
-                        editText = editReview,
-                        editContainer = editReviewContainer,
-                        errorHelperText = "Write review",
-                        requireContext()
-                    )
-                    reviewLogic(
-                        nameAnswer = nameAnswer,
-                        emailAnswer = emailAnswer,
-                        reviewAnswer = reviewAnswer
-                    )
+                    if (editReview.text?.isEmpty() == true){
+                        editReviewContainer.boxStrokeWidth = 3
+                        editReviewContainer.helperText = "Write review"
+                        editReview.background = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.bg_error_edittext
+                        )
+                        reviewLogic(reviewAnswer = false)
+                    }else if(editReview.text?.isNotEmpty()==true){
+                        editReviewContainer.boxStrokeWidth = 0
+                        editReviewContainer.helperText = null
+                        editReview.background = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.bg_review_edittext
+                        )
+                        reviewLogic(reviewAnswer = true)
+                    }
                 } else {
-                    reviewLogic(emailAnswer = false, nameAnswer = false, reviewAnswer = false)
+                    reviewLogic(reviewAnswer = false)
                 }
             }
         }
     }
 
 
-    private fun reviewLogic(emailAnswer: Boolean, nameAnswer: Boolean, reviewAnswer: Boolean) {
+    private fun reviewLogic(reviewAnswer: Boolean) {
         with(binding) {
             if (btnReview.text == TEXT_WRITE_REVIEW) {
                 btnReview.text = TEXT_SEND
                 containerOfRatingAndReview.visibility = View.VISIBLE
-                emailNameContainer.visibility = View.VISIBLE
                 ratingBar.isEnabled = true
                 reviewContainer.visibility = View.VISIBLE
             } else if (btnReview.text == TEXT_SEND) {
-                if (emailAnswer && nameAnswer && reviewAnswer && ratingCount > 0) {
+                if (reviewAnswer && ratingCount > 0) {
                     btnReview.text = WRITE_NEW_REVIEW
                     editReview.visibility = View.GONE
                     doneReview.visibility = View.VISIBLE
                     reviewContainer.visibility = View.VISIBLE
                     ratingBar.isEnabled = false
                     ratingBar.progressTintList = ColorStateList.valueOf(Color.YELLOW)
-                    emailNameContainer.visibility = View.GONE
                 } else {
                     ratingBar.isEnabled = true
                     Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
@@ -483,7 +517,6 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
 
                 btnReview.text = TEXT_SEND
                 containerOfRatingAndReview.visibility = View.VISIBLE
-                emailNameContainer.visibility = View.VISIBLE
                 reviewContainer.visibility = View.VISIBLE
                 editReview.visibility = View.VISIBLE
                 doneReview.visibility = View.GONE
@@ -497,7 +530,7 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         maxLength: Int
     ) {
         editText.doOnTextChanged { text, _, _, _ ->
-            if (editText.nameReviewCheck()) {
+            if (editText.text?.isNotEmpty()==true) {
                 if (text!!.length < maxLength) {
                     editTextContainer.boxStrokeWidth = 0
                     editTextContainer.helperText = null
@@ -518,46 +551,10 @@ class ProductcartFragment : BaseFragment(R.layout.fragment_productcart) {
         }
     }
 
-    private fun editEmailCheck() {
-        with(binding) {
-            editEmail.doOnTextChanged { _, _, _, _ ->
-                if (editEmail.emailCheck()) {
-                    editEmailContainer.boxStrokeWidth = 0
-                    editEmailContainer.helperText = null
-                    editEmail.background =
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.bg_review_edittext
-                        )
-                }
-            }
-        }
-    }
 
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun emailChecker(): Boolean {
-        var answer = false
-        with(binding) {
-            if (!editEmail.emailCheck()) {
-                editEmailContainer.boxStrokeWidth = 3
-                editEmailContainer.helperText = "invalid E-mail address"
-                editEmail.background = ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.bg_error_edittext
-                )
-                answer = false
-            } else if (editEmail.emailCheck()) {
-                editEmailContainer.boxStrokeWidth = 0
-                editEmailContainer.helperText = null
-                editEmail.background = ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.bg_review_edittext
-                )
-                answer = true
-            }
-        }
-        return answer
-    }
+
+
+
 
 }

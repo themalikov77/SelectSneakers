@@ -66,6 +66,8 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
     var isStart = false
     private var totalCount: Int = 1
     private val listImage = arrayListOf<Product>()
+    private var imgFavorite: String =
+        "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg"
 
     companion object {
         const val TEXT_SEND = "Отправить"
@@ -79,12 +81,6 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
         initRating()
         initTextFabric()
         initReductor()
-        editEmailCheck()
-        editReviewNameCheck(
-            editText = binding.editName,
-            editTextContainer = binding.editNameContainer,
-            20
-        )
         editReviewNameCheck(
             editText = binding.editReview,
             editTextContainer = binding.editReviewContainer,
@@ -150,19 +146,25 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
             }
             btnFavorite.setOnClickListener {
                 if (!isInMyFavorite) {
-                    addToRealtimeData("Favorite")
-                    if (doWeCheckFavorite) {
-                        binding.btnFavorite.isVisible = false
-                        binding.btnIsFavorite.isVisible = true
+                    try {
+                        if (isAdded){
+                            addToRealtimeData("Favorite")
+                            checkFavorite("Favorite")
+                        }
+                    }catch (e:Exception){
+                        Log.e("ololo",e.toString())
                     }
                 }
             }
             btnIsFavorite.setOnClickListener {
                 if (isInMyFavorite) {
-                    removeFromFavorite("Favorite")
-                    if (doWeCheckFavorite) {
-                        binding.btnFavorite.isVisible = true
-                        binding.btnIsFavorite.isVisible = false
+                    try {
+                        if (isAdded){
+                            removeFromFavorite("Favorite")
+                            checkFavorite("Favorite")
+                        }
+                    }catch (e:Exception){
+                        Log.e("ololo",e.toString())
                     }
                 }
             }
@@ -175,16 +177,14 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     isInMyFavorite = snapshot.exists()
-                    if (!doWeCheckFavorite) {
-                        if (!isInMyFavorite) {
-                            binding.btnFavorite.isVisible = true
-                            binding.btnIsFavorite.isVisible = false
-                        } else {
-                            binding.btnFavorite.isVisible = false
-                            binding.btnIsFavorite.isVisible = true
-                        }
-                    }
-                    doWeCheckFavorite = true
+                   try {
+                       if (isAdded){
+                           binding.btnIsFavorite.isVisible = isInMyFavorite
+                           binding.btnFavorite.isVisible = !isInMyFavorite
+                       }
+                   }catch (e:Exception){
+                       Log.e("ololo",e.toString())
+                   }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -203,14 +203,13 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
                 }
             }
         doWeCheckFavorite = true
-        Log.e("ololo", "it's work")
     }
 
     private fun addToRealtimeData(child: String) {
         with(binding) {
             val model = Favorite(
                 id = id.toString(),
-                img = "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg",
+                img = imgFavorite,
                 description = description.text.toString(),
                 color = "no coler",
                 size = "44",
@@ -293,10 +292,12 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
         checkFavorite("Favorite")
     }
 
+
     private fun receiveId() {
         arguments?.let {
             val images = it.getStringArrayList(ProductcartFragment.KEY_FOR_PRODUCT_CART_IMAGES2)
-            Log.e("ololo", "id: $images")
+            imgFavorite = images?.get(0)
+                ?: "https://i.pinimg.com/236x/5c/96/69/5c96694ff1cd942ff6818b5808565bd4.jpg"
             images?.let { it1 -> shoesPagerAdapter.addShoes(it1) }
             id = it.getInt(ProductcartFragment.KEY_FOR_PRODUCT_CART2)
         }
@@ -408,54 +409,48 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
 
     private fun reviewClick() {
         with(binding) {
-            var emailAnswer: Boolean
-            var nameAnswer: Boolean
-            var reviewAnswer: Boolean
             btnReview.setOnClickListener {
                 if (btnReview.text == ProductcartFragment.TEXT_SEND) {
-                    emailAnswer = emailChecker()
-                    nameAnswer = nameReviewChecker2(
-                        editText = editName,
-                        editContainer = editNameContainer,
-                        errorHelperText = "Write your name",
-                        requireContext()
-                    )
-                    reviewAnswer = nameReviewChecker2(
-                        editText = editReview,
-                        editContainer = editReviewContainer,
-                        errorHelperText = "Write review",
-                        requireContext()
-                    )
-                    reviewLogic(
-                        nameAnswer = nameAnswer,
-                        emailAnswer = emailAnswer,
-                        reviewAnswer = reviewAnswer
-                    )
+                    if (editReview.text?.isEmpty() == true){
+                        editReviewContainer.boxStrokeWidth = 3
+                        editReviewContainer.helperText = "Write review"
+                        editReview.background = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.bg_error_edittext
+                        )
+                        reviewLogic(reviewAnswer = false)
+                    }else if(editReview.text?.isNotEmpty()==true){
+                        editReviewContainer.boxStrokeWidth = 0
+                        editReviewContainer.helperText = null
+                        editReview.background = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.bg_review_edittext
+                        )
+                        reviewLogic(reviewAnswer = true)
+                    }
                 } else {
-                    reviewLogic(emailAnswer = false, nameAnswer = false, reviewAnswer = false)
+                    reviewLogic(reviewAnswer = false)
                 }
             }
         }
     }
 
 
-    private fun reviewLogic(emailAnswer: Boolean, nameAnswer: Boolean, reviewAnswer: Boolean) {
+    private fun reviewLogic( reviewAnswer: Boolean) {
         with(binding) {
             if (btnReview.text == ProductcartFragment.TEXT_WRITE_REVIEW) {
                 btnReview.text = ProductcartFragment.TEXT_SEND
                 containerOfRatingAndReview.visibility = View.VISIBLE
-                emailNameContainer.visibility = View.VISIBLE
                 ratingBar.isEnabled = true
                 reviewContainer.visibility = View.VISIBLE
             } else if (btnReview.text == ProductcartFragment.TEXT_SEND) {
-                if (emailAnswer && nameAnswer && reviewAnswer && ratingCount > 0) {
+                if (reviewAnswer && ratingCount > 0) {
                     btnReview.text = ProductcartFragment.WRITE_NEW_REVIEW
                     editReview.visibility = View.GONE
                     doneReview.visibility = View.VISIBLE
                     reviewContainer.visibility = View.VISIBLE
                     ratingBar.isEnabled = false
                     ratingBar.progressTintList = ColorStateList.valueOf(Color.YELLOW)
-                    emailNameContainer.visibility = View.GONE
                 } else {
                     ratingBar.isEnabled = true
                     Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
@@ -465,7 +460,6 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
 
                 btnReview.text = ProductcartFragment.TEXT_SEND
                 containerOfRatingAndReview.visibility = View.VISIBLE
-                emailNameContainer.visibility = View.VISIBLE
                 reviewContainer.visibility = View.VISIBLE
                 editReview.visibility = View.VISIBLE
                 doneReview.visibility = View.GONE
@@ -479,7 +473,7 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
         maxLength: Int
     ) {
         editText.doOnTextChanged { text, _, _, _ ->
-            if (editText.nameReviewCheck()) {
+            if (editText.text?.isNotEmpty()==true) {
                 if (text!!.length < maxLength) {
                     editTextContainer.boxStrokeWidth = 0
                     editTextContainer.helperText = null
@@ -500,44 +494,10 @@ class ProductCartFragment2 : BaseFragment(R.layout.fragment_product_cart2) {
         }
     }
 
-    private fun editEmailCheck() {
-        with(binding) {
-            editEmail.doOnTextChanged { _, _, _, _ ->
-                if (editEmail.emailCheck()) {
-                    editEmailContainer.boxStrokeWidth = 0
-                    editEmailContainer.helperText = null
-                    editEmail.background =
-                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_review_edittext)
-                }
-            }
-        }
-    }
 
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun emailChecker(): Boolean {
-        var answer = false
-        with(binding) {
-            if (!editEmail.emailCheck()) {
-                editEmailContainer.boxStrokeWidth = 3
-                editEmailContainer.helperText = "invalid E-mail address"
-                editEmail.background = ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.bg_error_edittext
-                )
-                answer = false
-            } else if (editEmail.emailCheck()) {
-                editEmailContainer.boxStrokeWidth = 0
-                editEmailContainer.helperText = null
-                editEmail.background = ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.bg_review_edittext
-                )
-                answer = true
-            }
-        }
-        return answer
-    }
+
+
 
 
 }
