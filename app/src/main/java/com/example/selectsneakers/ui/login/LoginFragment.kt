@@ -21,6 +21,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
 
     override fun initListeners() {
         super.initListeners()
+
         with(binding){
             tvSkip.setOnClickListener {
                 findNavController().navigate(R.id.homeFragment)
@@ -29,21 +30,28 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                 findNavController().navigate(R.id.choiceFragment)
             }
             btnEnter.setOnClickListener {
-                val email = etEmail.text.toString()
-                val password = etPassword.text.toString()
-                if(email.isNotEmpty()&&password.isNotEmpty()){
-                    mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
-                        if (it.isSuccessful){
-                            findNavController().navigate(R.id.homeFragment)
-                        }else{
-                            Toast.makeText(requireContext(), it.exception.toString(), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }else{
-                    Toast.makeText(requireContext(), "invalid", Toast.LENGTH_SHORT).show()
-                }
+
+                singIn()
             }
         }
+    }
+
+    private fun singIn() {
+       with(binding){
+           val email = etEmail.text.toString()
+           val password = etPassword.text.toString()
+           if(email.isNotEmpty()&&password.isNotEmpty()){
+               mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
+                   if (it.isSuccessful){
+                       findNavController().navigate(R.id.homeFragment)
+                   }else{
+                       Toast.makeText(requireContext(), it.exception.toString(), Toast.LENGTH_SHORT).show()
+                   }
+               }
+           }else{
+               Toast.makeText(requireContext(), "invalid", Toast.LENGTH_SHORT).show()
+           }
+       }
     }
 }
 

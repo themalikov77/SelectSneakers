@@ -2,7 +2,10 @@ package com.example.selectsneakers.data.remote.model
 
 
 data class Products(
-    val results: List<Product>
+    val results: List<Product>,
+    val next: String? = null,
+    val previous:String? = null,
+    val count: Int
 )
 
 data class Product(

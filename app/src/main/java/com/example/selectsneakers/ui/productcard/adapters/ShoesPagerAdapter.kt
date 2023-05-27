@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.selectsneakers.data.remote.model.ProductsImageSerializers
 import com.example.selectsneakers.databinding.ItemShoesPagerBinding
+import java.util.logging.Level
 
 class ShoesPagerAdapter : RecyclerView.Adapter<ShoesPagerAdapter.ShoesPagerViewHolder>() {
 
@@ -27,7 +29,8 @@ class ShoesPagerAdapter : RecyclerView.Adapter<ShoesPagerAdapter.ShoesPagerViewH
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addShoes(list: List<String>) {
+    fun addShoes(list:ArrayList<String>) {
+        listShoes.clear()
         listShoes.addAll(list)
         notifyDataSetChanged()
     }

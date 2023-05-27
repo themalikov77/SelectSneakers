@@ -5,6 +5,7 @@ import com.example.selectsneakers.core.network.RetrofitClient
 import com.example.selectsneakers.core.network.result.Resource
 import com.example.selectsneakers.data.remote.model.ProductDetailList
 import com.example.selectsneakers.data.remote.model.Products
+import com.example.selectsneakers.data.remote.model.ProductsImageSerializers
 
 class RemoteDataSource() : BaseDataSource() {
 
@@ -18,9 +19,15 @@ class RemoteDataSource() : BaseDataSource() {
         }
     }
 
-    suspend fun getProducts():Resource<Products>{
+    suspend fun getProducts(page:Int):Resource<Products>{
         return getResult {
-            apiService.getProducts()
+            apiService.getProducts(page)
+        }
+    }
+
+    suspend fun getImagesById(id:Int):Resource<ProductsImageSerializers>{
+        return getResult {
+            apiService.getImagesById(id)
         }
     }
 
